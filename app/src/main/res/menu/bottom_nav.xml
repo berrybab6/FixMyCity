@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/new_request_icn"
+            android:title="New Request"
+            android:icon="@drawable/new_requst"
+    />
+        <item
+                android:icon="@drawable/ic_add_circle_outline_black_24dp"
+                android:title="Add Request"
+                android:id="@+id/add_request_icn"
+
+        />
+
+    <item android:icon="@drawable/recent"
+          android:title="Recent"
+          android:id="@+id/recent_icn"/>
+</menu>

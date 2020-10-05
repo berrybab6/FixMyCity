@@ -1,0 +1,93 @@
+<resources>
+    <string name="app_name">FixMyCity</string>
+    <string name="create">
+        <u>Create Account</u>
+    </string>
+    <string name="forgot">
+        <u>Forgot Password?</u>
+    </string>
+    <string name="login">
+        <u>Login</u>
+    </string>
+
+    <string name="name">
+        <u>Name</u>
+    </string>
+    <string name="phone_number">
+        <u>Phone Number</u>
+    </string>
+    <string name="email">
+        <u>Email</u>
+    </string>
+    <string name="password">
+        <u>Password</u>
+    </string>
+    <string name="con_password">
+        <u>Confirm Password</u>
+    </string>
+    <string-array name="report_array">
+        <item></item>
+        <item>Grafitti Report </item>
+        <item>Dead Animal</item>
+        <item>Abandon Vehicle</item>
+        <item>Illegal Dumping</item>
+        <item>Parking Enforcement</item>
+        <item>Pothole</item>
+
+        <item>Anguilla</item>
+        <item>Antarctica</item>
+
+        <item>Cameroon</item>
+
+        <item>Zimbabwe</item>
+    </string-array>
+    <string-array name="report_location">
+        <item></item>
+        <item>Addis Ketema</item>
+        <item>Kolfe Keranio</item>
+        <item>Akaki Kalitti</item>
+        <item>Jemo 1</item>
+        <item>Kirkos 123</item>
+        <item>Jemo 2</item>
+        <item>Arat Kilo</item>
+        <item>Amist Kilo</item>
+        <item>Bole Bulbula</item>
+        <item>Bole Medanialem</item>
+        <item>Saris Abo</item>
+        <item>keranio</item>
+        <item>Nefas Silk</item>
+        <item>Ledeta</item>
+
+        <item>Anguilla</item>
+        <item>Antarctica</item>
+
+        <item>Cameroon</item>
+
+        <item>Zimbabwe</item>
+        <item>British Indian Ocean Territory</item>
+        <item>British Virgin Islands</item>
+        <item>Brunei</item>
+        <item>Bulgaria</item>
+        <item>Burkina Faso</item>
+        <item>Burundi</item>
+        <item>Cambodia</item>
+        <item>Cameroon</item>
+        <item>Canada</item>
+        <item>Cape Verde</item>
+        <item>Cayman Islands</item>
+        <item>Central African Republic</item>
+        <item>Chad</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Christmas Island</item>
+        <item>Cocos (Keeling) Islands</item>
+        <item>Colombia</item>
+        <item>Comoros</item>
+        <item>Anguilla</item>
+        <item>Antarctica</item>
+
+        <item>Cameroon</item>
+
+        <item>Zimbabwe</item>
+    </string-array>
+</resources>

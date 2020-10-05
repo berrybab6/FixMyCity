@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<item
+        android:title="Search"
+        android:icon="@drawable/ic_searchk"
+        android:id="@+id/nav_search_icn"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"
+/>
+    <item
+            android:title="Notification"
+            android:id="@+id/nav_notif_icn"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_notifications"
+    />
+    <item
+            android:title="Logout"
+            app:showAsAction="never"
+            android:id="@+id/logout_menu"/>
+
+
+        <item
+                android:id="@+id/changepassword_menu"
+                app:showAsAction="never"
+                android:title="Change Password"
+        />
+
+
+
+</menu>
