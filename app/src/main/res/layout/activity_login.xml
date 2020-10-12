@@ -151,14 +151,15 @@ tools:context=".LoginActivity">
 
                 android:background="@drawable/tw"
                 android:layout_height="55dp"/>
-        <ImageButton
-
-                android:contentDescription="facebook"
-                android:id="@+id/login_fb_iv"
-                android:background="@drawable/f2"
-                android:layout_marginRight="40dp"
+        <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button_fb"
                 android:layout_width="55dp"
-                android:layout_height="55dp"/>
+                android:layout_height="55dp"
+                android:background="@drawable/f2"
+
+                android:layout_marginRight="40dp"
+                 />
+
         <ImageButton
                 android:contentDescription="google"
 

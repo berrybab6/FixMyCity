@@ -1,10 +1,11 @@
-package mish.mish.assefa.com.fixmycity.Retrofit
+package mish.mish.assefa.com.fixmycity.data.controller
 
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.support.design.widget.Snackbar
+//import android.support.design.widget.Snackbar
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 
 fun View.snackbar(message: String) {
     Snackbar.make(

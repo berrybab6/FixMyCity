@@ -2,50 +2,58 @@ package mish.mish.assefa.com.fixmycity
 
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+//import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
+import androidx.appcompat.app.AppCompatActivity
+import com.facebook.*
+import com.facebook.login.LoginResult
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
-import mish.mish.assefa.com.fixmycity.Retrofit.LoginResult
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.Retrofit.SessionManagement
+import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
+import mish.mish.assefa.com.fixmycity.data.user.User
+import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.HashMap
 
 
 class LoginActivity : AppCompatActivity() {
    //lateinit  var token:String
+     lateinit var callBackManager:CallbackManager
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
      var retrofitInterface: IMyService? = null
+     //lateinit var user:User
     //val BASE_URL = "http://192.168.1.2:3000" // your Ip Address
 
 
     override fun onStart() {
         super.onStart()
-        val sessionManagement=SessionManagement(this)
+        val sessionManagement= SessionManagement(this)
         val isLoggedIn:String=sessionManagement.getSession()
+
+        val fN=sessionManagement.getFirstName()
+        val lN=sessionManagement.getLastName()
+        val userName=sessionManagement.getUserName()
+        val password:String=sessionManagement.getPassword()
+        val email=sessionManagement.getEmail()
+        val id=sessionManagement.getId()
+        val token=sessionManagement.getSession()
+
+        val user=User(fN,lN,password,email,id,userName,token)
+
         if (isLoggedIn.isNotEmpty()){
+
             val inte:Intent = Intent(this@LoginActivity, RequestActivity::class.java)
             inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            inte.putExtra("user",user)
 
             //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(inte)
@@ -68,7 +76,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 val email = login_email.text.toString()
                 val password = login_password.text.toString()
-
                 val map = HashMap<String, String>()
                 map["email"] = email
                 map["password"] = password
@@ -80,25 +87,37 @@ class LoginActivity : AppCompatActivity() {
                     val call = retrofitInterface!!.executeLogin(map)
 
 
-                    call.enqueue(object : Callback<LoginResult> {
-                        override fun onFailure(call: Call<LoginResult>, t: Throwable) {
+                    call.enqueue(object : Callback<User> {
+                        override fun onFailure(call: Call<User>, t: Throwable) {
                             //login_error.text("")
-                            login_error.text = t.message
+
+                            Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_LONG).show()
 
                         }
 
-                        override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
+                        override fun onResponse(call: Call<User>, response: Response<User>) {
                             if (response.code() == 200) {
-                                val user=LoginResult(response.body()!!.first_name,response.body()!!.last_name,response.body()!!._id,response.body()!!.username,response.body()!!.email,response.body()!!.password
+                                val user= User(response.body()!!.first_name,response.body()!!.last_name,response.body()!!._id,response.body()!!.username,response.body()!!.email,response.body()!!.password
                                 ,response.body()!!.token)
-                                val sessionManagement:SessionManagement= SessionManagement(this@LoginActivity)
+                                val sessionManagement: SessionManagement =
+                                    SessionManagement(this@LoginActivity)
                                 sessionManagement.saveSession(user)
 
+                                val fN=sessionManagement.getFirstName()
+                                val lN=sessionManagement.getLastName()
+                                val userName=sessionManagement.getUserName()
+                                val password:String=sessionManagement.getPassword()
+                                val email=sessionManagement.getEmail()
+                                val id=sessionManagement.getId()
+                                val token=sessionManagement.getSession()
+
+                                val user2=User(fN,lN,password,email,id,userName,token)
 
                                 login_error.text = ""
                                 Log.d("ActivityCallback", response.body()?.email)
                                 val inte:Intent = Intent(this@LoginActivity, RequestActivity::class.java)
                                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                inte.putExtra("user",user2)
 
                                 //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                 startActivity(inte)
@@ -158,12 +177,51 @@ class LoginActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
-        login_fb_iv.setOnClickListener {
+        //Login With Facebook
+
+        callBackManager= CallbackManager.Factory.create()
+
+        login_button_fb.setReadPermissions(listOf("public_profile", "email"))
+        login_button_fb.registerCallback(callBackManager,object :FacebookCallback<LoginResult>{
+            override fun onSuccess(result: LoginResult?) {
+                getUserProfile(result?.accessToken, result?.accessToken?.userId)
+                val intent=Intent(this@LoginActivity,RequestActivity::class.java)
+                startActivity(intent)
+
+            }
+
+            override fun onCancel() {
+
+            }
+
+            override fun onError(error: FacebookException?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+        /*login_fb_iv.setOnClickListener {
             val intent=Intent(this@LoginActivity,LoginOtherActivity::class.java)
 
             startActivity(intent)
-        }
+        }*/
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callBackManager.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+    var tokenTracker:AccessTokenTracker=object : AccessTokenTracker(){
+        override fun onCurrentAccessTokenChanged(oldAccessToken: AccessToken?, currentAccessToken: AccessToken?) {
+           if (currentAccessToken==null){
+               Toast.makeText(this@LoginActivity,"User LoggedOut,Please Login Again",Toast.LENGTH_SHORT).show()
+           }else{
+               getUserProfile(currentAccessToken,currentAccessToken.userId)
+           }
+        }
+
+    }
+
+
 }
 
 

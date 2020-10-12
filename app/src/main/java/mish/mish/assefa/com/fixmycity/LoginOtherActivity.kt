@@ -1,8 +1,9 @@
 package mish.mish.assefa.com.fixmycity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+//import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login_other.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService

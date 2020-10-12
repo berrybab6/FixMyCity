@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">FixMyCity</string>
+
+    <string name="facebook_app_id">348960243213064</string>
+    <string name="fb_login_protocol_scheme">fb348960243213064</string>
+
+
     <string name="create">
         <u>Create Account</u>
     </string>

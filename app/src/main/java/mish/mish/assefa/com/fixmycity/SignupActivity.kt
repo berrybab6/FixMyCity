@@ -1,11 +1,14 @@
 package mish.mish.assefa.com.fixmycity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.os.Build
+//import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -27,27 +30,21 @@ class SignupActivity : AppCompatActivity() {
             "(?=.*[@#$%^&+=])" +
             "(?=\\S+$)" +
             ".{4,}" + "$")
-    /*
-    lateinit var iMyService: IMyService
-    internal var compositeDisposable= CompositeDisposable()
 
-    override fun onStop() {
-        compositeDisposable.clear()
-        super.onStop()
-    }
-*/
 private var retrofit: Retrofit? = RetrofitClient.getInstance()
     private var retrofitInterface: IMyService? = null
    // private val BASE_URL = "http://192.168.1.2:3000"
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     fun notValidateEmail():Boolean{
         if (!Patterns.EMAIL_ADDRESS.matcher(email_signup_etv.text.toString()).matches()){
-            signup_error_tv.text="Please enter a valide Email Address"
+            signup_error_tv.text="Please enter a valid Email Address"
         }
         return true
     }
 
         val active=ActivateResult()
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -89,26 +86,6 @@ private var retrofit: Retrofit? = RetrofitClient.getInstance()
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.code() == 200) {
                         signup_error_tv.setText("")
-                        /*val call1=retrofitInterface!!.activateToken(true)
-                        call1.enqueue(object:Callback<ActivateResult>{
-                            override fun onFailure(call: Call<ActivateResult>, t: Throwable) {
-                                Toast.makeText(this@SignupActivity,"Activation Error ${t.printStackTrace()}",Toast.LENGTH_SHORT).show()
-
-                            }
-
-                            override fun onResponse(call: Call<ActivateResult>, response: Response<ActivateResult>) {
-                                if (response.code() == 200) {
-
-
-                                    Toast.makeText(this@SignupActivity, "User Activated successfully", Toast.LENGTH_LONG).show()
-                                    // val inte = Intent(this@SignupActivity,LoginActivity::class.java)
-                                    //startActivity(inte)
-                                }
-
-                            }
-
-                        })*/
-
 
                         Toast.makeText(this@SignupActivity, "Email sent successfully check your email", Toast.LENGTH_LONG).show()
                         val inte = Intent(this@SignupActivity,LoginActivity::class.java)

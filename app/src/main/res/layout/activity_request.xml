@@ -13,7 +13,7 @@
                  android:layout_height="match_parent"/>
 
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="70dp"
             app:menu="@menu/bottom_nav"
