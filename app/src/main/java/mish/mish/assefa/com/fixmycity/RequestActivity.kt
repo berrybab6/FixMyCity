@@ -1,6 +1,7 @@
 package mish.mish.assefa.com.fixmycity
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 //import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,9 +15,13 @@ import android.view.View
 //import android.support.v7.app.AlertDialog
 import android.view.*
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.facebook.AccessToken
+import com.facebook.AccessTokenTracker
+import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 //import androidx.appcompat.app.AlertDialog
 //import androidx.appcompat.app.AppCompatActivity
@@ -32,8 +37,17 @@ import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
 import mish.mish.assefa.com.fixmycity.data.user.User
 import retrofit2.Retrofit
 import java.util.regex.Pattern
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
+
 
 class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationItemSelectedListener {
+   lateinit var mGoogleSignInClient:GoogleSignInClient
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         val selectedFragement = when (p0.itemId) {
             R.id.new_request_icn -> {
@@ -43,7 +57,7 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
             R.id.recent_icn -> RecentFragement()
             else -> NewRequestFragement()
         }
-        //getIntent().putExtra("complexObject", user);
+       // getIntent().putExtra("complexObject", user);
         supportFragmentManager.beginTransaction().replace(R.id.fragement_container, selectedFragement).commit()
         return true
 
@@ -71,28 +85,43 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.logout_menu -> {
-                val sessionManagement = SessionManagement(this)
-                sessionManagement.removeSession()
-                val inte: Intent = Intent(this@RequestActivity, MainActivity::class.java)
-                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-                //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(inte)
+                //  signOut()
+                val i = intent.extras
+                if (i?.getInt("Google", 0) == 8) {
+                    signOut()
+                    Toast.makeText(this,"Google logout",Toast.LENGTH_SHORT).show()
+                }
+                else if(i?.getInt("Facebook",0)==3){
+                    LoginManager.getInstance().logOut()
 
-                Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@RequestActivity, LoginActivity::class.java)
+                    Toast.makeText(this,"logout From Facebook",Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                    }
+                else if(i?.getInt("Fix",1)==5){
+                    val sessionManagement = SessionManagement(this)
+                    sessionManagement.removeSession()
+
+                    val intent = Intent(this@RequestActivity, LoginActivity::class.java)
+                    startActivity(intent)
+
+                    Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show()
+                }
             }
+
             R.id.nav_notif_icn -> {
 
                 Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
             }
             R.id.changepassword_menu -> {
                 val view: View = LayoutInflater.from(this@RequestActivity).inflate(R.layout.change_password, null)
-                var builder: AlertDialog.Builder = AlertDialog.Builder(this@RequestActivity)
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@RequestActivity)
                 builder.setView(view)
                 builder.create().show()
-                var newP: String? = view.new_password_etv.text.toString()
-                var oldP: String? = view.old_password_etv.text.toString()
-                var confirmP: String? = view.confirm_new_password_etv.text.toString()
+                val newP: String? = view.new_password_etv.text.toString()
+                val oldP: String? = view.old_password_etv.text.toString()
+                val confirmP: String? = view.confirm_new_password_etv.text.toString()
 
 
                 // var a=R.layout.change_password.
@@ -120,35 +149,42 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
         }
         return true
     }
+    //Signout
+    private fun signOut() {
+        mGoogleSignInClient.signOut()
+            .addOnCompleteListener(this) {
+                val intent = Intent(this@RequestActivity, LoginActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
+                //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
 
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        if (acct != null) {
+            val personName = acct.displayName
+            val personGivenName = acct.givenName
+            val personFamilyName = acct.familyName
+            val personEmail = acct.email
+            val personId = acct.id
+            val personPhoto = acct.photoUrl
+        }
         val i = intent
-        val user: User = i.getSerializableExtra("user") as User
+        val user: User =User("mimish","assefa","@ab64","bedatuassefa@gmail.com","","","")    //i.getSerializableExtra("user") as User
 
-        getIntent().putExtra("user", user)
-        supportFragmentManager.beginTransaction().replace(R.id.fragement_container, AddReportFragement()).commit()
-        relativee.visibility = View.VISIBLE
+        i.putExtra("user", user)
+        supportFragmentManager.beginTransaction().replace(R.id.fragement_container, NewRequestFragement()).commit()
+        //relativee.visibility = View.VISIBLE
         val navigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottom_navigation.setOnNavigationItemSelectedListener(this)
+       navigationView.setOnNavigationItemSelectedListener(this)
+        //bottom_navigation.setOnNavigationItemSelectedListener(this)
     }
 }
-/*
-
-   private val navListener: BottomNavigationView.OnNavigationItemSelectedListener= BottomNavigationView.OnNavigationItemSelectedListener {
-        val selectedFragement: Fragment =when(it.itemId){
-           R.id.new_request_icn->{
-               NewRequestFragement()
-           }
-           R.id.add_request_icn->AddReportFragement()
-           R.id.recent_icn->RecentFragement()
-            else->NewRequestFragement()
-       }
-       //getIntent().putExtra("complexObject", user);
-       supportFragmentManager.beginTransaction().replace(R.id.fragement_container,selectedFragement).commit()
-       true
-    }
-}
-*/

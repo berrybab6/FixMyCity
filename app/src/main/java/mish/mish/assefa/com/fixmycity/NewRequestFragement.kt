@@ -22,8 +22,10 @@ import mish.mish.assefa.com.fixmycity.data.report.Report
 //@RequiresApi(Build.VERSION_CODES.HONEYCOMB)
 class NewRequestFragement: Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragement_new_request, container, false)
 
+        val view:View=inflater.inflate(R.layout.fragement_new_request, container, false)
+        activity?.title = "New Reports"
+        return view
         //return super.onCreateView(inflater, container, savedInstanceState)
     }
     /*
@@ -74,10 +76,10 @@ class NewRequestFragement: Fragment(){
 
         val myAdapter= AdapterC(arrayList,this.requireActivity())
 
-  /*
-           view?.recycler_new_reports?= LinearLayoutManager(this.activity)
+
+           view?.recycler_new_reports?.layoutManager= LinearLayoutManager(this.activity)
         view?.recycler_new_reports?.adapter=myAdapter
-*/
+
     }
 }
 

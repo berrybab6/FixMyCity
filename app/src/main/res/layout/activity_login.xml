@@ -135,38 +135,36 @@ tools:context=".LoginActivity">
                 android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-
-            android:layout_marginTop="30dp"
-    >
+<!--
         <ImageButton
+                android:layout_marginTop="30dp"
                 android:contentDescription="twitter"
                 android:id="@+id/login_tw_iv"
                 android:layout_marginRight="40dp"
-                android:layout_width="55dp"
+                android:layout_width="20dp"
 
                 android:background="@drawable/tw"
-                android:layout_height="55dp"/>
+                android:layout_height="55dp"/> -->
         <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button_fb"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:background="@drawable/f2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+            android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
 
-                android:layout_marginRight="40dp"
+
                  />
 
-        <ImageButton
-                android:contentDescription="google"
+        <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_sign_in_button"
+                android:layout_width="match_parent"
 
-                android:background="@drawable/gpp"
-                android:id="@+id/login_google_iv"
-                android:layout_width="55dp"
-                android:layout_height="55dp"/>
-    </LinearLayout>
+                android:layout_height="wrap_content" />
+
+
+
 </LinearLayout>
 </LinearLayout>

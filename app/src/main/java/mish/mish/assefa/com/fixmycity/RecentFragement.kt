@@ -23,14 +23,13 @@ import mish.mish.assefa.com.fixmycity.data.report.Report
 
 class RecentFragement: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-
-        return inflater.inflate(R.layout.fragement_recent,container,false)
-       //return super.onCreateView(inflater, container, savedInstanceState)
+        val view =inflater.inflate(R.layout.fragement_recent,container,false)
+       activity?.title="Recent Reports"
+        return view
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val arrayList=ArrayList<Report>()
         val c= Report()
         val a= Report()
@@ -38,7 +37,7 @@ class RecentFragement: Fragment() {
         c.reportReq?.name="Dead Animal"
         c.reportReq?.municipal="Addis Ketema"
         c.reportReq?.description="A dog died here in Saris"
-        // c.image="asas"
+         c.reportReq?.image=""
 
         c.report_status=false
         c.reported_time="4hr ago"
@@ -59,26 +58,46 @@ class RecentFragement: Fragment() {
         arrayList.add(a)
         arrayList.add(c)
 
-  /* val rList=ArrayList<Report>()
-for (j in arrayList.size-1 downTo 0) {
+        val myAdapter= AdapterC(arrayList, this.requireContext())
+        view?.recycler_recent_reports?.layoutManager= LinearLayoutManager(this.requireContext())
+        view?.recycler_recent_reports?.adapter=myAdapter
+    }
 
-        val a =arrayList[j]
-        val b=a.reported_time
-        for (i in b){
-            if (i.isDigit()&& i.toInt()<5){
-                rList.add(a)
+    override fun onStart() {
+        super.onStart()
+        val arrayList=ArrayList<Report>()
+        val c= Report()
+        val a= Report()
 
-            }
-        }
+        c.reportReq?.name="Dead Animal"
+        c.reportReq?.municipal="Addis Ketema"
+        c.reportReq?.description="A dog died here in Saris"
+        c.reportReq?.image="asas"
+
+        c.report_status=false
+        c.reported_time="4hr ago"
+        a.reportReq?.name="Pothole"
+        a.reportReq?.municipal="Saris"
+        a.reportReq?.description="A dog died here in Saris"
+        //a.image="asas"
+        a.report_status=true
+        a.reported_time="7hr ago"
 
 
-}*/
-/*
+        arrayList.add(a)
+        arrayList.add(c)
+        arrayList.add(a)
+        arrayList.add(c)
+        arrayList.add(a)
+        arrayList.add(c)
+
+
+
 
         val myAdapter= AdapterC(arrayList, this.requireContext())
         view?.recycler_recent_reports?.layoutManager= LinearLayoutManager(this.requireContext())
         view?.recycler_recent_reports?.adapter=myAdapter
-*/
+
     }
 
 

@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -23,13 +25,25 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.HashMap
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import android.R
+import android.R.attr.data
+import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.common.api.ApiException
+//import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
+import com.google.android.gms.tasks.Task
 
-
+const val RC_SIGN_IN:Int=0
 class LoginActivity : AppCompatActivity() {
    //lateinit  var token:String
      lateinit var callBackManager:CallbackManager
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
      var retrofitInterface: IMyService? = null
+
+    //Google Sign in
+
+    lateinit var mGoogleSignInClient:GoogleSignInClient
      //lateinit var user:User
     //val BASE_URL = "http://192.168.1.2:3000" // your Ip Address
 
@@ -55,22 +69,30 @@ class LoginActivity : AppCompatActivity() {
             inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             inte.putExtra("user",user)
 
-            //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
             startActivity(inte)
+        }else{
+
+            val account = GoogleSignIn.getLastSignedInAccount(this)
+
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(mish.mish.assefa.com.fixmycity.R.layout.activity_login)
 
-        /*retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()*/
+
         retrofitInterface = retrofit!!.create(IMyService::class.java)
 
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+       mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         loginpage.setOnClickListener(object : View.OnClickListener {
 
             override fun onClick(v: View?) {
@@ -118,6 +140,7 @@ class LoginActivity : AppCompatActivity() {
                                 val inte:Intent = Intent(this@LoginActivity, RequestActivity::class.java)
                                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 inte.putExtra("user",user2)
+                                inte.putExtra("Fix",5)
 
                                 //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                 startActivity(inte)
@@ -161,22 +184,15 @@ class LoginActivity : AppCompatActivity() {
         create_login.setOnClickListener {
 
             val intent=Intent(this@LoginActivity,SignupActivity::class.java)
-            //val intent= Intent(,CreateAccount::class.java)
-            //=new Intent(SplashActivity.this,MainActivity.class)
-            startActivity(intent)
-        }
-
-        login_google_iv.setOnClickListener {
-            val intent=Intent(this@LoginActivity,LoginOtherActivity::class.java)
 
             startActivity(intent)
         }
 
-        login_tw_iv.setOnClickListener {
-            val intent=Intent(this@LoginActivity,LoginOtherActivity::class.java)
-
-            startActivity(intent)
+        google_sign_in_button.setOnClickListener {
+            signIn()
         }
+
+
         //Login With Facebook
 
         callBackManager= CallbackManager.Factory.create()
@@ -186,6 +202,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess(result: LoginResult?) {
                 getUserProfile(result?.accessToken, result?.accessToken?.userId)
                 val intent=Intent(this@LoginActivity,RequestActivity::class.java)
+                intent.putExtra("Facebook",3)
                 startActivity(intent)
 
             }
@@ -195,31 +212,54 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onError(error: FacebookException?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
         })
-        /*login_fb_iv.setOnClickListener {
-            val intent=Intent(this@LoginActivity,LoginOtherActivity::class.java)
 
-            startActivity(intent)
-        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         callBackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-    }
-    var tokenTracker:AccessTokenTracker=object : AccessTokenTracker(){
-        override fun onCurrentAccessTokenChanged(oldAccessToken: AccessToken?, currentAccessToken: AccessToken?) {
-           if (currentAccessToken==null){
-               Toast.makeText(this@LoginActivity,"User LoggedOut,Please Login Again",Toast.LENGTH_SHORT).show()
-           }else{
-               getUserProfile(currentAccessToken,currentAccessToken.userId)
-           }
+
+        if (RC_SIGN_IN == requestCode) {
+
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
         }
 
     }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+
+            // Signed in successfully, show authenticated UI.
+                val intent=Intent(this@LoginActivity,RequestActivity::class.java)
+                intent.putExtra("Google",8)
+                startActivity(intent)
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Error", "signInResult:failed code=" + e.statusCode)
+
+        }
+
+    }
+
+
+
+
+    private fun signIn() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+
+
 
 
 }

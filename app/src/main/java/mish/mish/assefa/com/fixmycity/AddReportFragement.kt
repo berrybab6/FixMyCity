@@ -54,9 +54,11 @@ class AddReportFragement: Fragment() {
        val i = activity!!.intent
        val user = i.getSerializableExtra("user") as User
 
+        val view= inflater.inflate(R.layout.fragement_add_report, container, false)
+       activity?.title = "Add Report"
 
-       return inflater.inflate(R.layout.fragement_add_report, container, false)
 
+           return view
     }
 
 
