@@ -1,16 +1,17 @@
 package mish.mish.assefa.com.fixmycity.Retrofit
 
+//import mish.mish.assefa.com.fixmycity.data.user.User
+
+
 import mish.mish.assefa.com.fixmycity.data.report.Report
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
 import mish.mish.assefa.com.fixmycity.data.user.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-
-
-import java.util.HashMap
-
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
+
 //import kotlin.collections
 
 //import retrofit2.http.POST
@@ -26,12 +27,11 @@ interface IMyService {
 
     @POST("/reports/")
     @Multipart
-    fun addReport(@Part("session") map2:HashMap<String,User>,
-
-                  @Part file: MultipartBody.Part,
-                  @Part("file") image:RequestBody,
-        //@Part("session") user: User,
-                  @Part("body") map:HashMap<String,String>):Call<ReportReq>
+    fun addReport(
+         @Part file: MultipartBody.Part,
+         @Part("file") image:RequestBody,
+        @Part("session") user: User,
+          @Part("body") map:HashMap<String,String>):Call<ReportReq>
 
 
     @POST("/auth/activate/:token")

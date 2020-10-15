@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragement_new_request.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
 import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
-import mish.mish.assefa.com.fixmycity.data.user.User
+
 import retrofit2.Retrofit
 import java.util.regex.Pattern
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -177,10 +177,17 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
             val personId = acct.id
             val personPhoto = acct.photoUrl
         }
-        val i = intent
-        val user: User =User("mimish","assefa","@ab64","bedatuassefa@gmail.com","","","")    //i.getSerializableExtra("user") as User
+        val i = intent.extras
+        val user=i!!.getString("user")
+          //i.getSerializableExtra("user") as User
+        val bundle = Bundle()
+        bundle.putString("user", user)
 
-        i.putExtra("user", user)
+     // My fragment
+        val obj = AddReportFragement()
+        obj.arguments = bundle
+
+
         supportFragmentManager.beginTransaction().replace(R.id.fragement_container, NewRequestFragement()).commit()
         //relativee.visibility = View.VISIBLE
         val navigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)

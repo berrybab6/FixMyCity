@@ -19,6 +19,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragement_add_report.*
 import kotlinx.android.synthetic.main.fragement_add_report.view.*
 import kotlinx.android.synthetic.main.image_selector.view.*
 import mish.mish.assefa.com.fixmycity.Retrofit.*
@@ -27,7 +28,7 @@ import mish.mish.assefa.com.fixmycity.data.controller.UploadImage
 import mish.mish.assefa.com.fixmycity.data.controller.getFileName
 import mish.mish.assefa.com.fixmycity.data.controller.snackbar
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
-import mish.mish.assefa.com.fixmycity.data.user.User
+
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -51,8 +52,7 @@ class AddReportFragement: Fragment() {
    // var report = Report()
     //lateinit var imageUri:Uri
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-       val i = activity!!.intent
-       val user = i.getSerializableExtra("user") as User
+       //val data:String? = arguments!!.getString("user")
 
         val view= inflater.inflate(R.layout.fragement_add_report, container, false)
        activity?.title = "Add Report"
@@ -98,8 +98,7 @@ class AddReportFragement: Fragment() {
     override fun onStart() {
         super.onStart()
 
-      val i = activity?.intent
-        val user:User = i?.getSerializableExtra("user") as User
+        //val data = arguments!!.getString("user")
         retrofitInterface = retrofit!!.create(IMyService::class.java)
 
 
@@ -122,7 +121,7 @@ class AddReportFragement: Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                view?.reportname_etv?.setText(parent?.getItemAtPosition(position).toString())
+                reportname_etv?.setText(parent?.getItemAtPosition(position).toString())
             }
         }
 
@@ -130,7 +129,7 @@ class AddReportFragement: Fragment() {
         //desc= arrayOf(InputFilter.LengthFilter(100))
 
 
-        val spinCity: Spinner = view!!.reportlocation_spinner
+        val spinCity: Spinner = reportlocation_spinner
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this.requireActivity(),
@@ -149,7 +148,7 @@ class AddReportFragement: Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                view?.reportlocation_etv?.setText(parent?.getItemAtPosition(position).toString())
+                reportlocation_etv?.setText(parent?.getItemAtPosition(position).toString())
             }
         }
 
@@ -157,7 +156,7 @@ class AddReportFragement: Fragment() {
 
 
 
-        view?.add_image_btn?.setOnClickListener {
+        add_image_btn?.setOnClickListener {
 
             val view: View = LayoutInflater.from(this.requireActivity()).inflate(R.layout.image_selector, null)
             var builder2: AlertDialog.Builder =AlertDialog.Builder(this.requireActivity())
@@ -180,13 +179,13 @@ class AddReportFragement: Fragment() {
 
         }
 
-        view?.add_report_btn?.setOnClickListener {
+        add_report_btn?.setOnClickListener {
 
-            val rName = view!!.reportname_etv.text.toString()
-            val rLocation = view!!.reportlocation_etv.text.toString()
-            val rSpinner: String = view!!.reportname_spinner.toString()
-            val image = view!!.report_image_iv
-            val desc = view!!.report_description_etv.toString()
+            val rName = reportname_etv.text.toString()
+            val rLocation = reportlocation_etv.text.toString()
+            val rSpinner: String = reportname_spinner.toString()
+            val image = report_image_iv
+            val desc = report_description_etv.toString()
 
 
 
@@ -197,24 +196,18 @@ class AddReportFragement: Fragment() {
             val map = HashMap<String, String>()
             map["name"] = rName
             map["description"] = desc
-            val map2=HashMap<String, User>()
+
+            val sessionManagement =SessionManagement(this.requireContext())
+
+            val isLoggedIn = sessionManagement.SESSION_KEY
 
 
-
-            val sessionManagement =
-                SessionManagement(this.requireContext())
-           // sessionManagement.saveSession(user)
-            val isLoggedIn: String = sessionManagement.getSession()
           //  map["userEmail"]=sessionManagement.getEmail()
             if (selectedImageUri == null) {
                 view?.snackbar("Select an Image First")
 
             }
-
-
-
-
-            val parcelFileDescriptor = activity?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r")
+             val parcelFileDescriptor = activity?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r")
 
             val inputStream = FileInputStream(parcelFileDescriptor?.fileDescriptor)
             val file = File(activity?.cacheDir, activity?.contentResolver?.getFileName(selectedImageUri!!))
@@ -225,10 +218,10 @@ class AddReportFragement: Fragment() {
             if (isLoggedIn.isNotEmpty()) {
                // val user=LoginResult()
 
-            map2["user"]=sessionManagement.getUser()
+          //  map2["user"]=sessionManagement.getSession()
                 val body = UploadImage.UploadRequestBody(file, "image")
                 val call = retrofitInterface!!.addReport(
-                    map2,
+
                    MultipartBody.Part.createFormData("image", file.name, body),
                     RequestBody.create(MediaType.parse("multipart/form-data"), "json"),
 
@@ -269,13 +262,13 @@ class AddReportFragement: Fragment() {
 
                             builder.setMessage("Your report has been submitted succesfully!!!").setTitle("Submitted")
                                 .setCancelable(true)
-                                .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
+                                .setNegativeButton("Cancel") { dialog, which ->
 
                                     //  Action for 'NO' Button
                                     dialog.cancel()
 
 
-                                })
+                                }
 
 
                             val alert = builder.create()
@@ -284,17 +277,17 @@ class AddReportFragement: Fragment() {
                             alert.getButton(AlertDialog.BUTTON_NEGATIVE)
                                 .setTextColor(resources.getColor(R.color.colorPrimary))
 
-                            val int: Intent = Intent(activity, NewRequestFragement()::class.java)
+                            val int = Intent(activity, NewRequestFragement()::class.java)
                             activity?.startActivity(int)
 
 
                             //val intent:Intent=Intent(this@AddReportFragement,RequestActivity::class.java)
 
 
-                        } else if (response.code() == 400) {
-                            view?.report_description_etv?.setText("")
-                            view?.reportlocation_etv?.setText("")
-                            view?.reportname_etv?.setText("")
+                        } else if (response.code() == 401) {
+                            report_description_etv?.setText("")
+                            reportlocation_etv?.setText("")
+                            reportname_etv?.setText("")
                             Toast.makeText(activity, "Report invalid refill the fields", Toast.LENGTH_LONG)
 
                         }
@@ -305,6 +298,8 @@ class AddReportFragement: Fragment() {
 
 
             }
+
+            Toast.makeText(this.requireContext(),"Unable to add to the Database",Toast.LENGTH_LONG).show()
         }
 
         }

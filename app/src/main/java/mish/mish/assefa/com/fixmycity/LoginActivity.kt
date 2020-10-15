@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
 import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
-import mish.mish.assefa.com.fixmycity.data.user.User
+
 import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,52 +33,82 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.api.ApiException
 //import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
 import com.google.android.gms.tasks.Task
+import mish.mish.assefa.com.fixmycity.data.user.User
+
 
 const val RC_SIGN_IN:Int=0
 class LoginActivity : AppCompatActivity() {
-   //lateinit  var token:String
-     lateinit var callBackManager:CallbackManager
+
+
+
+    //lateinit  var token:String
+    lateinit var callBackManager: CallbackManager
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
-     var retrofitInterface: IMyService? = null
+    var retrofitInterface: IMyService? = null
 
     //Google Sign in
 
-    lateinit var mGoogleSignInClient:GoogleSignInClient
-     //lateinit var user:User
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    //lateinit var user:User
     //val BASE_URL = "http://192.168.1.2:3000" // your Ip Address
 
 
     override fun onStart() {
         super.onStart()
-        val sessionManagement= SessionManagement(this)
-        val isLoggedIn:String=sessionManagement.getSession()
 
-        val fN=sessionManagement.getFirstName()
-        val lN=sessionManagement.getLastName()
-        val userName=sessionManagement.getUserName()
-        val password:String=sessionManagement.getPassword()
-        val email=sessionManagement.getEmail()
-        val id=sessionManagement.getId()
-        val token=sessionManagement.getSession()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
 
-        val user=User(fN,lN,password,email,id,userName,token)
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        val sessionManagement = SessionManagement(this)
+        val isLoggedIn: String = sessionManagement.getSession()
+        val account = GoogleSignIn.getLastSignedInAccount(this)
 
-        if (isLoggedIn.isNotEmpty()){
+        val isLoggedinFb = mish.mish.assefa.com.fixmycity.data.user.isLoggedIn()
 
-            val inte:Intent = Intent(this@LoginActivity, RequestActivity::class.java)
-            inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            inte.putExtra("user",user)
+        val fN = sessionManagement.getFirstName()
+        val lN = sessionManagement.getLastName()
+        val userName = sessionManagement.getUserName()
+        val password: String = sessionManagement.getPassword()
+        val email = sessionManagement.getEmail()
+        val id = sessionManagement.getId()
+        val token = sessionManagement.getSession()
+
+        val user = User(fN, lN, password, email, id, userName, token)
 
 
-            startActivity(inte)
-        }else{
+        when {
+            isLoggedinFb -> {
+                val inte: Intent = Intent(this@LoginActivity, RequestActivity::class.java)
+                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                inte.putExtra("Facebook", 3)
+                startActivity(inte)
+            }
+            isLoggedIn.isNotEmpty() -> {
+                val user1= user.token
 
-            val account = GoogleSignIn.getLastSignedInAccount(this)
+                val inte = Intent(this@LoginActivity, RequestActivity::class.java)
+                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
+                inte.putExtra("user", isLoggedIn)
+                inte.putExtra("Fix", 5)
+
+
+                startActivity(inte)
+            }
+            account!=null-> {
+                val inte: Intent = Intent(this@LoginActivity, RequestActivity::class.java)
+                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                inte.putExtra("Google", 8)
+                startActivity(inte)
+            }
         }
 
     }
 
+    lateinit var user:User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mish.mish.assefa.com.fixmycity.R.layout.activity_login)
@@ -93,84 +123,86 @@ class LoginActivity : AppCompatActivity() {
 
         // Build a GoogleSignInClient with the options specified by gso.
        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        loginpage.setOnClickListener(object : View.OnClickListener {
-
-            override fun onClick(v: View?) {
-                val email = login_email.text.toString()
-                val password = login_password.text.toString()
-                val map = HashMap<String, String>()
-                map["email"] = email
-                map["password"] = password
+        loginpage.setOnClickListener {
+            val email = login_email.text.toString()
+            val password = login_password.text.toString()
+            val map = HashMap<String, String>()
+            map["email"] = email
+            map["password"] = password
 
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    login_error.text = "Fields cant be empty"
-                } else {
-                    val call = retrofitInterface!!.executeLogin(map)
+            if (email.isEmpty() || password.isEmpty()) {
+                login_error.text = "Fields cant be empty"
+            } else {
+                val call = retrofitInterface!!.executeLogin(map)
 
 
-                    call.enqueue(object : Callback<User> {
-                        override fun onFailure(call: Call<User>, t: Throwable) {
-                            //login_error.text("")
+                call.enqueue(object : Callback<User> {
+                    override fun onFailure(call: Call<User>, t: Throwable) {
+                        //login_error.text("")
 
-                            Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@LoginActivity,t.message,Toast.LENGTH_LONG).show()
 
-                        }
+                    }
 
-                        override fun onResponse(call: Call<User>, response: Response<User>) {
-                            if (response.code() == 200) {
-                                val user= User(response.body()!!.first_name,response.body()!!.last_name,response.body()!!._id,response.body()!!.username,response.body()!!.email,response.body()!!.password
-                                ,response.body()!!.token)
-                                val sessionManagement: SessionManagement =
-                                    SessionManagement(this@LoginActivity)
-                                sessionManagement.saveSession(user)
+                    override fun onResponse(call: Call<User>, response: Response<User>) {
+                        if (response.code() == 200) {
 
-                                val fN=sessionManagement.getFirstName()
-                                val lN=sessionManagement.getLastName()
-                                val userName=sessionManagement.getUserName()
-                                val password:String=sessionManagement.getPassword()
-                                val email=sessionManagement.getEmail()
-                                val id=sessionManagement.getId()
-                                val token=sessionManagement.getSession()
+                            val email1=response.body()!!.email
+                            val first_name1=response.body()!!.first_name
+                            val last_name1=response.body()!!.last_name
+                            val _id1=response.body()!!._id
+                            val token3=response.body()!!.token
+                            val password1=response.body()!!.password
+                            val username1=response.body()!!.username
+                            user=User(first_name1,last_name1,password1,email1,_id1,username1,token3)
 
-                                val user2=User(fN,lN,password,email,id,userName,token)
 
-                                login_error.text = ""
-                                Log.d("ActivityCallback", response.body()?.email)
-                                val inte:Intent = Intent(this@LoginActivity, RequestActivity::class.java)
-                                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                inte.putExtra("user",user2)
-                                inte.putExtra("Fix",5)
+                            val sessionManagement=
+                                SessionManagement(this@LoginActivity)
+                            sessionManagement.saveSession(user)
 
-                                //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                startActivity(inte)
+
+                            //val id=sessionManagement.getId()
+                            val token=sessionManagement.getSession()
+
+
+
+                            login_error.text = ""
+                            Log.d("ActivityCallback", response.body()?.email)
+                            val inte = Intent(this@LoginActivity, RequestActivity::class.java)
+                            inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            inte.putExtra("user",token)
+                            inte.putExtra("Fix",5)
+
+                            //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(inte)
+                            login_email.setText("")
+                            login_password.setText("")
+
+
+                        } else if (response.code() == 400) {
+                            val email = login_email.text.toString()
+                            val password = login_password.text.toString()
+                            if (email.isEmpty() || password.isEmpty()) {
+                                login_error.text = "Fields cannot be empty"
+                            } else {
                                 login_email.setText("")
                                 login_password.setText("")
-
-
-                            } else if (response.code() == 400) {
-                                val email = login_email.text.toString()
-                                val password = login_password.text.toString()
-                                if (email.isEmpty() || password.isEmpty()) {
-                                    login_error.text = "Fields cannot be empty"
-                                } else {
-                                    login_email.setText("")
-                                    login_password.setText("")
-                                    login_error.text = "Incorrect Password and/or Email!!!!"
-                                }
-
+                                login_error.text = "Incorrect Password and/or Email!!!!"
                             }
-
 
                         }
 
 
-                    })
+                    }
 
 
-                }
+                })
+
+
             }
-        })
+        }
 
         forgot.setOnClickListener(object:View.OnClickListener{
             override fun onClick(v: View?) {
@@ -225,7 +257,7 @@ class LoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (RC_SIGN_IN == requestCode) {
-
+            Log.d("dd", RC_SIGN_IN.toString())
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
@@ -264,117 +296,3 @@ class LoginActivity : AppCompatActivity() {
 
 }
 
-
-/*
-    private fun handleSignupDialog() {
-        val view = layoutInflater.inflate(R.layout.signup_dialog, null)
-
-        val builder = AlertDialog.Builder(this)
-        builder.setView(view).show()
-
-        val signupBtn = view.findViewById(R.id.signup)
-        val nameEdit = view.findViewById(R.id.nameEdit)
-        val emailEdit = view.findViewById(R.id.emailEdit)
-        val passwordEdit = view.findViewById(R.id.passwordEdit)
-
-        signupBtn.setOnClickListener(View.OnClickListener {
-            val map = HashMap<String, String>()
-            map["name"] = nameEdit.getText().toString()
-            map["email"] = emailEdit.getText().toString()
-            map["password"] = passwordEdit.getText().toString()
-
-            val call = retrofitInterface!!.executeSignup(map)
-
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.code() == 200) {
-                        Toast.makeText(this@MainActivity, "Signed Up successfully", Toast.LENGTH_LONG).show()
-                    } else if (response.code() == 400) {
-                        Toast.makeText(this@MainActivity, "Already Registered ", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Toast.makeText(
-                        this@MainActivity, t.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
-        })
-    }
-}
-*/
-/*
-class LoginActivity : AppCompatActivity() {
-    lateinit var iMyService: IMyService
-    internal var compositeDisposable=CompositeDisposable()
-
-    override fun onStop() {
-        compositeDisposable.clear()
-        super.onStop()
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        //init
-        val retrofit:Retrofit=RetrofitClient.getInstance()
-        iMyService=retrofit.create(IMyService::class.java)
-
-        //
-        loginpage.setOnClickListener(object:View.OnClickListener{
-
-            override fun onClick(v: View?) {
-                val email=login_email.text.toString()
-                val password=login_password.text.toString()
-
-
-                    loginUser(email,password)
-
-
-
-                    //val inte = Intent(this@LoginActivity, SignupActivity::class.java)
-                    //startActivity(inte)
-                }
-
-
-        })
-
-        create_login.setOnClickListener {
-
-            val intent=Intent(this@LoginActivity,SignupActivity::class.java)
-            //val intent= Intent(,CreateAccount::class.java)
-            //=new Intent(SplashActivity.this,MainActivity.class)
-            startActivity(intent)
-        }
-        forgot.setOnClickListener(object:View.OnClickListener{
-               override fun onClick(v: View?) {
-
-                intent = Intent(this@LoginActivity, ForgotPActivity::class.java)
-            }
-
-        })
-        login_google_iv.setOnClickListener(object:View.OnClickListener{
-            override fun onClick(v: View?) {
-
-                intent = Intent(this@LoginActivity, LoginOtherActivity::class.java)
-            }
-        })
-
-    }
-
-    private fun loginUser(email:String,password:String){
-        if (login_email.text.isEmpty() || login_password.text.isEmpty()){
-            login_error.text="Incorrect Email and/or Incorrect Password !!!"}
-
-        compositeDisposable.add(iMyService.loginUser(email, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result->
-                Toast.makeText(this@LoginActivity,"hey "+result,Toast.LENGTH_SHORT).show()
-                Log.d("ActivityCallBack","User signed in Succesfully")
-            }
-        )
-        //Log.d("ActivityCallBack","User signed in Succesfully")
-    }
-}*/

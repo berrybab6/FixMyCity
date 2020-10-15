@@ -3,7 +3,9 @@ package mish.mish.assefa.com.fixmycity.data.controller
 import android.content.Context
 import android.content.SharedPreferences
 import android.provider.ContactsContract
+import mish.mish.assefa.com.fixmycity.LoginActivity
 import mish.mish.assefa.com.fixmycity.data.user.User
+
 import java.net.PasswordAuthentication
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -26,7 +28,7 @@ class SessionManagement(context: Context) {
         editor=sharedPreferences.edit()
 
     }
-    fun saveSession(user:User){
+    fun saveSession(user: User){
         val token=user.token
         val email:String=user.email
         val _id:String=user._id
@@ -72,7 +74,8 @@ class SessionManagement(context: Context) {
     fun getPassword():String{
         return sharedPreferences.getString(PASSWORD,"")
     }
-    fun getUser(): User {
+
+    /*fun getUser(): User {
         return User(FNAME,LNAME,PASSWORD,EMAIL,ID,USERNAME,SESSION_KEY)
-    }
+    }*/
 }
