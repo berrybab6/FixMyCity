@@ -1,5 +1,7 @@
 package mish.mish.assefa.com.fixmycity.data.controller
 
+import okhttp3.CipherSuite.Companion.forJavaName
+import okhttp3.MediaType.Companion.toMediaType
 import android.os.Handler
 import android.os.Looper
 import okhttp3.MediaType
@@ -7,15 +9,17 @@ import okhttp3.RequestBody
 import okio.BufferedSink
 import java.io.File
 import java.io.FileInputStream
-
-class UploadImage {
-    class UploadRequestBody(
-        private val file: File,
-        private val contentType: String
+/*
+class UploadImage(
+    private val file: File){
+   // class UploadRequestBody(
+        //private val file: File
+     //  private val contentType: String
        // private val callback: UploadCallback
-    ) : RequestBody() {
+    //) : RequestBody() {
 
-        override fun contentType() = MediaType.parse("$contentType/*")
+
+        //override fun contentType() = MediaType.parse("$contentType/*")
 
         override fun contentLength() = file.length()
 
@@ -39,17 +43,17 @@ class UploadImage {
             fun onProgressUpdate(percentage: Int)
         }
 
-       /* inner class ProgressUpdater(
+        inner class ProgressUpdater(
             private val uploaded: Long,
             private val total: Long
         ) : Runnable {
             override fun run() {
                 callback.onProgressUpdate((100 * uploaded / total).toInt())
             }
-        }*/
+        }
 
         companion object {
             private const val DEFAULT_BUFFER_SIZE = 2048
         }
     }
-}
+}*/

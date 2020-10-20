@@ -3,6 +3,7 @@ package mish.mish.assefa.com.fixmycity
 import android.content.Intent
 //import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_forgot_p.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
@@ -19,20 +20,27 @@ class ForgotPActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_p)
 
-        val email:String=forgot_email_edt.text.toString()
+        val email=forgot_email_edt.text.toString()
+        val map1= HashMap<String,String>()
+        map1["email"]=email
+        retrofitInterface = retrofit!!.create(IMyService::class.java)
         forgot_btn.setOnClickListener {
 
 
-        val call = retrofitInterface!!.forgetPassword(email)
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-
+           val call = retrofitInterface!!.forgetPassword(map1)
+              call.enqueue(object : Callback<Void> {
+                  override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(!response.isSuccessful){
+                        Toast.makeText(this@ForgotPActivity,response.message(),Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                    Toast.makeText(this@ForgotPActivity,response.message(),Toast.LENGTH_SHORT).show()
                     val inte = Intent(this@ForgotPActivity, LoginActivity::class.java)
-                    startActivity(inte)
+                    startActivity(inte)}
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-
+                        Toast.makeText(this@ForgotPActivity,t.message,Toast.LENGTH_SHORT).show()
                 }
             })
     }

@@ -11,14 +11,14 @@ import java.net.PasswordAuthentication
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
 class SessionManagement(context: Context) {
-     val EMAIL="email"
-     val SESSION_KEY="token"
-     val ID="_id"
-     val SHARED_PREF_NAME="session"
-    val PASSWORD="password"
-    val FNAME="first_name"
-    val LNAME="last_name"
-    val USERNAME="username"
+     var EMAIL="email"
+     var SESSION_KEY="token"
+     var ID="_id"
+     var SHARED_PREF_NAME="session"
+    var PASSWORD="password"
+    var FNAME="first_name"
+    var LNAME="last_name"
+    var USERNAME="username"
     private var  sharedPreferences:SharedPreferences
      private var editor:SharedPreferences.Editor
 
@@ -28,6 +28,7 @@ class SessionManagement(context: Context) {
         editor=sharedPreferences.edit()
 
     }
+
     fun saveSession(user: User){
         val token=user.token
         val email:String=user.email
@@ -47,6 +48,8 @@ class SessionManagement(context: Context) {
 
 
     }
+
+
 
     fun getId():String{
     return sharedPreferences.getString(ID,"")

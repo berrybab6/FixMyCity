@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
 
 import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
 import retrofit2.Call
@@ -27,12 +26,10 @@ import retrofit2.Retrofit
 import java.util.HashMap
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import android.R
-import android.R.attr.data
-import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.api.ApiException
 //import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
 import com.google.android.gms.tasks.Task
+import mish.mish.assefa.com.fixmycity.data.user.SessionClass
 import mish.mish.assefa.com.fixmycity.data.user.User
 
 
@@ -49,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
     //Google Sign in
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var session: SessionClass
     //lateinit var user:User
     //val BASE_URL = "http://192.168.1.2:3000" // your Ip Address
 
@@ -62,21 +60,15 @@ class LoginActivity : AppCompatActivity() {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        val sessionManagement = SessionManagement(this)
-        val isLoggedIn: String = sessionManagement.getSession()
+       // Initializing Session Class
+        session= SessionClass(this)
+
+
+
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         val isLoggedinFb = mish.mish.assefa.com.fixmycity.data.user.isLoggedIn()
 
-        val fN = sessionManagement.getFirstName()
-        val lN = sessionManagement.getLastName()
-        val userName = sessionManagement.getUserName()
-        val password: String = sessionManagement.getPassword()
-        val email = sessionManagement.getEmail()
-        val id = sessionManagement.getId()
-        val token = sessionManagement.getSession()
-
-        val user = User(fN, lN, password, email, id, userName, token)
 
 
         when {
@@ -86,13 +78,14 @@ class LoginActivity : AppCompatActivity() {
                 inte.putExtra("Facebook", 3)
                 startActivity(inte)
             }
-            isLoggedIn.isNotEmpty() -> {
-                val user1= user.token
+
+           session.isLoggedIn() -> {
+
 
                 val inte = Intent(this@LoginActivity, RequestActivity::class.java)
                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-                inte.putExtra("user", isLoggedIn)
+               // inte.putExtra("user", isLoggedIn)
                 inte.putExtra("Fix", 5)
 
 
@@ -108,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    lateinit var user:User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mish.mish.assefa.com.fixmycity.R.layout.activity_login)
@@ -155,24 +148,18 @@ class LoginActivity : AppCompatActivity() {
                             val token3=response.body()!!.token
                             val password1=response.body()!!.password
                             val username1=response.body()!!.username
-                            user=User(first_name1,last_name1,password1,email1,_id1,username1,token3)
 
+                            session= SessionClass(this@LoginActivity)
+                            // Creating user login session
+                            session.createLoginSession(first_name1,last_name1,email1,_id1,token3,password1,username1)
 
-                            val sessionManagement=
-                                SessionManagement(this@LoginActivity)
-                            sessionManagement.saveSession(user)
-
-
-                            //val id=sessionManagement.getId()
-                            val token=sessionManagement.getSession()
-
-
+                        Toast.makeText(this@LoginActivity,"token: $token3 ,$email1",Toast.LENGTH_LONG).show()
 
                             login_error.text = ""
                             Log.d("ActivityCallback", response.body()?.email)
-                            val inte = Intent(this@LoginActivity, RequestActivity::class.java)
+                          val inte = Intent(this@LoginActivity, RequestActivity::class.java)
                             inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            inte.putExtra("user",token)
+
                             inte.putExtra("Fix",5)
 
                             //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -213,6 +200,7 @@ class LoginActivity : AppCompatActivity() {
 
         })
 
+
         create_login.setOnClickListener {
 
             val intent=Intent(this@LoginActivity,SignupActivity::class.java)
@@ -224,7 +212,11 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
-
+        //Login as Municipality
+        login_as_municipality.setOnClickListener {
+            val intent=Intent(this,LoginOtherActivity::class.java)
+            startActivity(intent)
+        }
         //Login With Facebook
 
         callBackManager= CallbackManager.Factory.create()
@@ -252,16 +244,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        //facebook call Manager
         callBackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-
+        //Google request code
         if (RC_SIGN_IN == requestCode) {
             Log.d("dd", RC_SIGN_IN.toString())
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
-
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {

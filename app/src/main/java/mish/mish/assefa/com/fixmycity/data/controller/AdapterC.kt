@@ -13,10 +13,7 @@ import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.data.report.Report
 
 class AdapterC(var arratList: ArrayList<Report>, val context:Context) : RecyclerView.Adapter<AdapterC.ViewHolder>() {
-    //var arratList:ArrayList<Report>
-    init {
-        this.arratList=arratList
-    }
+
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
        val v =LayoutInflater.from(p0.context).inflate(R.layout.custom_card_view,p0,false)
@@ -33,7 +30,6 @@ class AdapterC(var arratList: ArrayList<Report>, val context:Context) : Recycler
         p0.bindItems(arratList[p1])
 
         p0.expandableLayout.visibility
-
 
         p0.itemView.setOnClickListener {
             if (p1==0){
@@ -64,16 +60,10 @@ class AdapterC(var arratList: ArrayList<Report>, val context:Context) : Recycler
 
             var expandableLayout: LinearLayout = itemView.expandable_layout_1
 
-            expandableLayout.setOnClickListener {
-
-            }
-
             }
             var expandableLayout: LinearLayout = itemView.expandable_layout_1
 
-
         }
-
 
     }
 

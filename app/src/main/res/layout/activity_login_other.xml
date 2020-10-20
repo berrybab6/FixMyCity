@@ -5,14 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-
-
         android:layout_height="match_parent"
         tools:context=".LoginOtherActivity">
-
-
-
-
         <TextView
 
                 android:layout_width="wrap_content"
@@ -31,12 +25,12 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="#80f00f00"
                 android:textSize="22sp"
-                android:id="@+id/login_error"
+                android:id="@+id/login_other_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <EditText
                 android:id="@+id/login_other_email"
-                android:hint="Email"
+                android:hint="Username"
                 android:inputType="textAutoComplete|textEmailAddress"
                 android:background="@null"
                 android:layout_width="match_parent"

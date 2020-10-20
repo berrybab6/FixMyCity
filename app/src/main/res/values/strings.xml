@@ -30,9 +30,11 @@
     <string name="con_password">
         <u>Confirm Password</u>
     </string>
+    <string name="municipality">Login as Municipality</string>
+    <string name="no_new_notification">No New Notification</string>
     <string-array name="report_array">
         <item></item>
-        <item>Grafitti Report </item>
+        <item>Grafitti Report</item>
         <item>Dead Animal</item>
         <item>Abandon Vehicle</item>
         <item>Illegal Dumping</item>
@@ -48,51 +50,16 @@
     </string-array>
     <string-array name="report_location">
         <item></item>
-        <item>Addis Ketema</item>
-        <item>Kolfe Keranio</item>
-        <item>Akaki Kalitti</item>
-        <item>Jemo 1</item>
-        <item>Kirkos 123</item>
-        <item>Jemo 2</item>
-        <item>Arat Kilo</item>
-        <item>Amist Kilo</item>
-        <item>Bole Bulbula</item>
-        <item>Bole Medanialem</item>
-        <item>Saris Abo</item>
-        <item>keranio</item>
-        <item>Nefas Silk</item>
-        <item>Ledeta</item>
+        <item>Addis Ketema Sub-city Administration</item>
+        <item>Arada Sub-City Administration</item>
+        <item>Bole Sub City Administration</item>
+        <item>Akaky Kaliti Sub-city Administration</item>
+        <item>Gullele Sub City Administration</item>
+        <item>Lideta Sub City Administration</item>
+        <item>Kolfe Keranio Sub City Administration</item>
+        <item>Yeka Sub City Administration</item>
+        <item>Lideta Sub City Administration</item>
+        <item>Nifas Silk_lafto Sub City Administration</item>
 
-        <item>Anguilla</item>
-        <item>Antarctica</item>
-
-        <item>Cameroon</item>
-
-        <item>Zimbabwe</item>
-        <item>British Indian Ocean Territory</item>
-        <item>British Virgin Islands</item>
-        <item>Brunei</item>
-        <item>Bulgaria</item>
-        <item>Burkina Faso</item>
-        <item>Burundi</item>
-        <item>Cambodia</item>
-        <item>Cameroon</item>
-        <item>Canada</item>
-        <item>Cape Verde</item>
-        <item>Cayman Islands</item>
-        <item>Central African Republic</item>
-        <item>Chad</item>
-        <item>Chile</item>
-        <item>China</item>
-        <item>Christmas Island</item>
-        <item>Cocos (Keeling) Islands</item>
-        <item>Colombia</item>
-        <item>Comoros</item>
-        <item>Anguilla</item>
-        <item>Antarctica</item>
-
-        <item>Cameroon</item>
-
-        <item>Zimbabwe</item>
     </string-array>
 </resources>

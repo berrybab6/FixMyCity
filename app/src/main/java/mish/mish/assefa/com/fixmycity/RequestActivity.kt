@@ -1,7 +1,6 @@
 package mish.mish.assefa.com.fixmycity
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 //import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,42 +14,43 @@ import android.view.View
 //import android.support.v7.app.AlertDialog
 import android.view.*
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.facebook.AccessToken
-import com.facebook.AccessTokenTracker
 import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 //import androidx.appcompat.app.AlertDialog
 //import androidx.appcompat.app.AppCompatActivity
 //import androidx.fragment.app.Fragment
 //import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_request.*
 import kotlinx.android.synthetic.main.change_password.view.*
-import kotlinx.android.synthetic.main.fragement_new_request.*
 //import kotlinx.android.synthetic.main.change_password.view.*
-import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
-import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.data.controller.SessionManagement
 
-import retrofit2.Retrofit
 import java.util.regex.Pattern
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
+import kotlinx.android.synthetic.main.notification.view.*
+import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
+import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
+import mish.mish.assefa.com.fixmycity.data.municipality.Municipalities
+import mish.mish.assefa.com.fixmycity.data.user.SessionClass
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 
 class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationItemSelectedListener {
    lateinit var mGoogleSignInClient:GoogleSignInClient
+    lateinit var sessionClass: SessionClass
+
+    private var retrofit: Retrofit? = RetrofitClient.getInstance()
+    var retrofitInterface: IMyService? = null
+
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         val selectedFragement = when (p0.itemId) {
             R.id.new_request_icn -> {
+
                 NewRequestFragement()
             }
             R.id.add_request_icn -> AddReportFragement()
@@ -63,8 +63,7 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
 
     }
 
-    private var retrofit: Retrofit? = RetrofitClient.getInstance()
-    private var retrofitInterface: IMyService? = null
+
 
     //private lateinit var adapter: ArrayAdapter<String>
     val PASSWORD_PATTERN: Pattern = Pattern.compile(
@@ -100,18 +99,24 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
                     startActivity(intent)
                     }
                 else if(i?.getInt("Fix",1)==5){
-                    val sessionManagement = SessionManagement(this)
-                    sessionManagement.removeSession()
-
-                    val intent = Intent(this@RequestActivity, LoginActivity::class.java)
-                    startActivity(intent)
-
+                    sessionClass= SessionClass(this)
+                    sessionClass.logoutUser()
                     Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show()
                 }
             }
 
             R.id.nav_notif_icn -> {
-
+                /*val view: View = LayoutInflater.from(this@RequestActivity).inflate(R.layout.notification, null)
+                val builder2: AlertDialog.Builder =AlertDialog.Builder(this@RequestActivity)
+                builder2.setView(view)
+                builder2.create().show()
+                view.notification_desc.text="Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong."
+                view.notification_ok.setOnClickListener {
+                    val intent=Intent(this,RequestActivity::class.java)
+                    startActivity(intent)
+                }*/
+                val intent=Intent(this@RequestActivity,ReportsMunicipalityActivity::class.java)
+                startActivity(intent)
                 Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
             }
             R.id.changepassword_menu -> {
@@ -163,6 +168,10 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
+
+
+
+        sessionClass= SessionClass(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
@@ -178,14 +187,9 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
             val personPhoto = acct.photoUrl
         }
         val i = intent.extras
-        val user=i!!.getString("user")
-          //i.getSerializableExtra("user") as User
-        val bundle = Bundle()
-        bundle.putString("user", user)
 
-     // My fragment
-        val obj = AddReportFragement()
-        obj.arguments = bundle
+          //i.getSerializableExtra("user") as User
+
 
 
         supportFragmentManager.beginTransaction().replace(R.id.fragement_container, NewRequestFragement()).commit()

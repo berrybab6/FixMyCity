@@ -2,12 +2,9 @@ package mish.mish.assefa.com.fixmycity.data.report
 
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
 
-class Report{
-   var reportReq: ReportReq? = null
-
-
+class Report(reportRequest:ReportReq){
+   var reportReq: ReportReq = reportRequest
     var expandeble:Boolean=false
-
     var report_status:Boolean=false
     var reported_time:String="4hr ago"
 
