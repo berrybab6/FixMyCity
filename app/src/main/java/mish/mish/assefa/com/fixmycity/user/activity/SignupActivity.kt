@@ -1,30 +1,27 @@
-package mish.mish.assefa.com.fixmycity
+package mish.mish.assefa.com.fixmycity.user.activity
 
 import android.content.Intent
 import android.os.Build
 //import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_signup.*
+import mish.mish.assefa.com.fixmycity.LoginActivity
+import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.Retrofit.ActivateResult
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.regex.Pattern
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : BaseActivity() {
     val PASSWORD_PATTERN:Pattern=  Pattern.compile("^" +
             "(?=.*[a-zA-Z])" +
             "(?=.*[@#$%^&+=])" +
@@ -88,7 +85,7 @@ private var retrofit: Retrofit? = RetrofitClient.getInstance()
                         signup_error_tv.setText("")
 
                         Toast.makeText(this@SignupActivity, "Email sent successfully check your email", Toast.LENGTH_LONG).show()
-                        val inte = Intent(this@SignupActivity,LoginActivity::class.java)
+                        val inte = Intent(this@SignupActivity, LoginActivity::class.java)
                         startActivity(inte)
 
                     } else if (response.code() == 400) {
@@ -96,7 +93,7 @@ private var retrofit: Retrofit? = RetrofitClient.getInstance()
                         password_signup_etv.setText("")
                         firstname_etv.setText("")
                         confirm_password_etv.setText("")
-                        signup_error_tv.setText("User Already exists!!!!!!!")
+                        signup_error_tv.setText(response.message())
                         //Toast.makeText(this@SignupActivity, "Already Registered ", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -118,7 +115,7 @@ private var retrofit: Retrofit? = RetrofitClient.getInstance()
 
         }
         login_create.setOnClickListener {
-            val inte = Intent(this@SignupActivity,LoginActivity::class.java)
+            val inte = Intent(this@SignupActivity, LoginActivity::class.java)
             startActivity(inte)
         }
 

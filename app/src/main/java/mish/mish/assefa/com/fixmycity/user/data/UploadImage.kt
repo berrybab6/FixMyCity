@@ -1,25 +1,23 @@
-package mish.mish.assefa.com.fixmycity.data.controller
+package mish.mish.assefa.com.fixmycity.user.data
 
-import okhttp3.CipherSuite.Companion.forJavaName
-import okhttp3.MediaType.Companion.toMediaType
 import android.os.Handler
 import android.os.Looper
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okio.BufferedSink
 import java.io.File
 import java.io.FileInputStream
-/*
+
 class UploadImage(
     private val file: File){
-   // class UploadRequestBody(
-        //private val file: File
-     //  private val contentType: String
+   class UploadRequestBody(
+        private val file: File,
+       private val contentType: String
        // private val callback: UploadCallback
-    //) : RequestBody() {
+    ) : RequestBody() {
 
 
-        //override fun contentType() = MediaType.parse("$contentType/*")
+        override fun contentType() = "$contentType/*".toMediaTypeOrNull()
 
         override fun contentLength() = file.length()
 
@@ -42,7 +40,7 @@ class UploadImage(
         interface UploadCallback {
             fun onProgressUpdate(percentage: Int)
         }
-
+/*
         inner class ProgressUpdater(
             private val uploaded: Long,
             private val total: Long
@@ -50,10 +48,10 @@ class UploadImage(
             override fun run() {
                 callback.onProgressUpdate((100 * uploaded / total).toInt())
             }
-        }
+        }*/
 
         companion object {
             private const val DEFAULT_BUFFER_SIZE = 2048
         }
     }
-}*/
+}

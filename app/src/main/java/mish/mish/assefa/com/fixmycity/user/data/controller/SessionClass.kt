@@ -1,13 +1,12 @@
-package mish.mish.assefa.com.fixmycity.data.municipality
+package mish.mish.assefa.com.fixmycity.user.data.controller
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import mish.mish.assefa.com.fixmycity.LoginActivity
-import mish.mish.assefa.com.fixmycity.LoginOtherActivity
+import android.content.Intent
 
 
-class MunicipSession (var context: Context) {
+class SessionClass (var context:Context) {
     var _context: Context
     var prefs: SharedPreferences
     var editor: SharedPreferences.Editor
@@ -18,10 +17,12 @@ class MunicipSession (var context: Context) {
     private val IS_LOGIN = "isLoggedIn"
 
     val KEY_NAME = "first_name"
-    val KEY_ID = "_id"
+    val KEY_EMAIL = "userEmail"
+    val KEY_SESSION = "session"
+    val KEY_ID = "id"
+    val KEY_LNAME="last_name"
     val KEY_PASSWORD="password"
     val KEY_USERNAME="username"
-
     init {
         this._context = context
         prefs = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
@@ -32,15 +33,17 @@ class MunicipSession (var context: Context) {
     /**
      * Create login session
      */
-    fun createMunipSession(name: String,id: String,password:String,username:String) {
+    fun createLoginSession(name: String,last_name:String, email: String, id: String, token: String,password:String,username:String) {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true)
         // Storing name in pref
         editor.putString(KEY_NAME, name)
-
+        editor.putString(KEY_LNAME,last_name)
+        // Storing email in pref
+        editor.putString(KEY_EMAIL, email)
         editor.putString(KEY_USERNAME,username)
         //storing token in pref
-
+        editor.putString(KEY_SESSION, token)
         editor.putString(KEY_PASSWORD,password)
 
         //storing user id in pref
@@ -52,19 +55,21 @@ class MunicipSession (var context: Context) {
     /**
      * Get stored session data
      */
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    fun getMunipDetails(): HashMap<String, String> {
-        val municipality = HashMap<String, String>()
+    fun getUserDetails(): HashMap<String, String> {
+        val user= HashMap<String, String>()
         // user name
-        municipality[KEY_NAME] = prefs.getString(KEY_NAME, null)
-
+        user[KEY_NAME] = prefs.getString(KEY_NAME, "")!!
+        // user email id
+        user[KEY_EMAIL] = prefs.getString(KEY_EMAIL, "")!!
+        // user token
+        user[KEY_SESSION] = prefs.getString(KEY_SESSION, "")!!
         // user  id
-        municipality[KEY_ID] = prefs.getString(KEY_ID, null)
-        municipality[KEY_PASSWORD]=prefs.getString(KEY_PASSWORD,null)
-        municipality[KEY_USERNAME]=prefs.getString(KEY_USERNAME,null)
-
+        user[KEY_ID] = prefs.getString(KEY_ID, "")!!
+        user[KEY_PASSWORD]=prefs.getString(KEY_PASSWORD,"")!!
+        user[KEY_USERNAME]=prefs.getString(KEY_USERNAME,"")!!
+        user[KEY_LNAME]=prefs.getString(KEY_LNAME,"")!!
         // return user
-        return municipality
+        return user
     }
 
     fun isLoggedIn(): Boolean {
@@ -78,13 +83,13 @@ class MunicipSession (var context: Context) {
      * */
     fun checkLogin() {
         if (!this.isLoggedIn()) {
-            // user is not logged in redirect him to Login Activity
-            val i = Intent(_context, LoginOtherActivity::class.java)
+    // user is not logged in redirect him to Login Activity
+            val i = Intent(_context, LoginActivity::class.java)
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            // Add new Flag to start new Activity
+        // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            // Staring Login Activity
+       // Staring Login Activity
             _context.startActivity(i)
         }
 

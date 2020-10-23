@@ -90,7 +90,7 @@
 
                         android:foreground="@drawable/location_foreground"
                         android:id="@+id/location_image_iv"
-                        android:src="@drawable/fix"
+                        android:src="@drawable/brokencar"
                         android:foregroundGravity="bottom|right"
                         android:layout_width="100dp"
                         android:layout_height="100dp"/>
@@ -123,6 +123,7 @@
                         android:layout_height="wrap_content"/>
 
                 <LinearLayout
+                        android:id="@+id/rate_stars_custom"
                     android:layout_weight="1"
                     android:visibility="visible"
                     android:gravity="right"

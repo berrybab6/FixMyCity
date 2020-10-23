@@ -1,4 +1,4 @@
-package mish.mish.assefa.com.fixmycity.data.controller
+package mish.mish.assefa.com.fixmycity.user.data
 
 import android.content.ContentResolver
 import android.net.Uri

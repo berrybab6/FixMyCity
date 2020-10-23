@@ -1,4 +1,4 @@
-package mish.mish.assefa.com.fixmycity.data.user
+package mish.mish.assefa.com.fixmycity.user.data.user
 
 import android.annotation.SuppressLint
 import android.os.Bundle

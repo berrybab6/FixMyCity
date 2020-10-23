@@ -8,12 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_forgot_p.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class ForgotPActivity : AppCompatActivity() {
+class ForgotPActivity : BaseActivity() {
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
     var retrofitInterface: IMyService? = null
     override fun onCreate(savedInstanceState: Bundle?) {

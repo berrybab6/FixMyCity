@@ -15,7 +15,15 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:replace="android:appComponentFactory">
-        <activity android:name=".ReportsMunicipalityActivity">
+        <activity android:name=".framework.base.BaseActivity">
+        </activity>
+        <activity
+                android:name=".municipality.activity.MunicipalityDetailActivity"
+                android:theme="@style/AppTheme.ActionBar">
+        </activity>
+        <activity
+                android:name=".municipality.activity.ReportsMunicipalityActivity"
+                android:theme="@style/AppTheme.ActionBar">
         </activity>
 
         <meta-data
@@ -39,14 +47,14 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".RequestActivity"
+                android:name=".user.activity.RequestActivity"
                 android:theme="@style/AppTheme.ActionBar">
         </activity>
         <activity android:name=".ForgotPActivity">
         </activity>
-        <activity android:name=".LoginOtherActivity">
+        <activity android:name=".municipality.activity.LoginOtherActivity">
         </activity>
-        <activity android:name=".SignupActivity">
+        <activity android:name=".user.activity.SignupActivity">
         </activity>
         <activity
                 android:name=".LoginActivity"

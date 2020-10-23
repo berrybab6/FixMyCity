@@ -1,12 +1,15 @@
 package mish.mish.assefa.com.fixmycity.data.report
 
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
+import java.io.Serializable
 
-class Report(reportRequest:ReportReq){
+class Report(reportRequest:ReportReq):Serializable{
    var reportReq: ReportReq = reportRequest
+
     var expandeble:Boolean=false
     var report_status:Boolean=false
     var reported_time:String="4hr ago"
+    var is_rated:Boolean=false
 
 
 

@@ -10,7 +10,7 @@
         android:paddingRight="15dp"
         android:orientation="vertical"
         android:background="@color/colorAccent"
-        tools:context=".SignupActivity">
+        tools:context=".user.activity.SignupActivity">
     <TextView
             android:textStyle="bold"
             android:fontFamily="sans-serif-light"

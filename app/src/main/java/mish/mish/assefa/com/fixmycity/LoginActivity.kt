@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
 
-import mish.mish.assefa.com.fixmycity.data.user.getUserProfile
+import mish.mish.assefa.com.fixmycity.user.data.user.getUserProfile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,15 +29,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 //import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
 import com.google.android.gms.tasks.Task
-import mish.mish.assefa.com.fixmycity.data.user.SessionClass
-import mish.mish.assefa.com.fixmycity.data.user.User
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
+import mish.mish.assefa.com.fixmycity.user.data.controller.SessionClass
+import mish.mish.assefa.com.fixmycity.user.data.user.User
+import mish.mish.assefa.com.fixmycity.municipality.activity.LoginOtherActivity
+import mish.mish.assefa.com.fixmycity.user.activity.RequestActivity
+import mish.mish.assefa.com.fixmycity.user.activity.SignupActivity
+import mish.mish.assefa.com.fixmycity.user.data.user.isLoggedIn
 
 
 const val RC_SIGN_IN:Int=0
-class LoginActivity : AppCompatActivity() {
-
-
-
+class LoginActivity : BaseActivity() {
     //lateinit  var token:String
     lateinit var callBackManager: CallbackManager
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
@@ -67,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
-        val isLoggedinFb = mish.mish.assefa.com.fixmycity.data.user.isLoggedIn()
+        val isLoggedinFb = isLoggedIn()
 
 
 
@@ -144,26 +146,29 @@ class LoginActivity : AppCompatActivity() {
                             val email1=response.body()!!.email
                             val first_name1=response.body()!!.first_name
                             val last_name1=response.body()!!.last_name
-                            val _id1=response.body()!!._id
+                            val id1=response.body()!!._id
                             val token3=response.body()!!.token
                             val password1=response.body()!!.password
                             val username1=response.body()!!.username
 
-                            session= SessionClass(this@LoginActivity)
+                            session=
+                                SessionClass(this@LoginActivity)
                             // Creating user login session
-                            session.createLoginSession(first_name1,last_name1,email1,_id1,token3,password1,username1)
+                            session.createLoginSession(first_name1,last_name1,email1,id1,token3,password1,username1)
 
                         Toast.makeText(this@LoginActivity,"token: $token3 ,$email1",Toast.LENGTH_LONG).show()
 
                             login_error.text = ""
                             Log.d("ActivityCallback", response.body()?.email)
-                          val inte = Intent(this@LoginActivity, RequestActivity::class.java)
-                            inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            if (session.isLoggedIn()) {
+                                val inte = Intent(this@LoginActivity, RequestActivity::class.java)
+                                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-                            inte.putExtra("Fix",5)
+                                inte.putExtra("Fix", 5)
 
-                            //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(inte)
+                                //inte.flags( Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                startActivity(inte)
+                            }
                             login_email.setText("")
                             login_password.setText("")
 
@@ -203,7 +208,7 @@ class LoginActivity : AppCompatActivity() {
 
         create_login.setOnClickListener {
 
-            val intent=Intent(this@LoginActivity,SignupActivity::class.java)
+            val intent=Intent(this@LoginActivity, SignupActivity::class.java)
 
             startActivity(intent)
         }
@@ -214,7 +219,7 @@ class LoginActivity : AppCompatActivity() {
 
         //Login as Municipality
         login_as_municipality.setOnClickListener {
-            val intent=Intent(this,LoginOtherActivity::class.java)
+            val intent=Intent(this, LoginOtherActivity::class.java)
             startActivity(intent)
         }
         //Login With Facebook
@@ -224,8 +229,11 @@ class LoginActivity : AppCompatActivity() {
         login_button_fb.setReadPermissions(listOf("public_profile", "email"))
         login_button_fb.registerCallback(callBackManager,object :FacebookCallback<LoginResult>{
             override fun onSuccess(result: LoginResult?) {
-                getUserProfile(result?.accessToken, result?.accessToken?.userId)
-                val intent=Intent(this@LoginActivity,RequestActivity::class.java)
+                getUserProfile(
+                    result?.accessToken,
+                    result?.accessToken?.userId
+                )
+                val intent=Intent(this@LoginActivity, RequestActivity::class.java)
                 intent.putExtra("Facebook",3)
                 startActivity(intent)
 
@@ -260,7 +268,7 @@ class LoginActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
-                val intent=Intent(this@LoginActivity,RequestActivity::class.java)
+                val intent=Intent(this@LoginActivity, RequestActivity::class.java)
                 intent.putExtra("Google",8)
                 startActivity(intent)
         } catch (e: ApiException) {

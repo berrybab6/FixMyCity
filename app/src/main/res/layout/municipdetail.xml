@@ -62,6 +62,7 @@
         <Button
                 android:textColor="@color/colorAccent"
                 android:text="Assign"
+                android:id="@+id/is_assigned_btn"
                 android:background="@color/backgroundColor"
                 android:padding="10dp"
                 android:layout_gravity="center"
@@ -70,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <LinearLayout
+                android:id="@+id/rate_star"
                 android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="end"

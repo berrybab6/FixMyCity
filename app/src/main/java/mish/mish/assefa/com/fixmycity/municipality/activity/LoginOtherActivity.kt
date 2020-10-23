@@ -1,4 +1,4 @@
-package mish.mish.assefa.com.fixmycity
+package mish.mish.assefa.com.fixmycity.municipality.activity
 
 import android.content.Intent
 //import android.support.v7.app.AppCompatActivity
@@ -7,26 +7,25 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login_other.*
+import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.data.municipality.MunicipSession
-import mish.mish.assefa.com.fixmycity.data.municipality.Municipality
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
+import mish.mish.assefa.com.fixmycity.municipality.controller.MunicipSession
+import mish.mish.assefa.com.fixmycity.municipality.data.Municipality
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.HashMap
 
-class LoginOtherActivity : AppCompatActivity() {
+class LoginOtherActivity : BaseActivity() {
     private var retrofit: Retrofit? = RetrofitClient.getInstance()
     var retrofitInterface: IMyService? = null
     lateinit var municipality: Municipality
     lateinit var session: MunicipSession
 
 
-    override fun onStop() {
-        super.onStop()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +59,8 @@ class LoginOtherActivity : AppCompatActivity() {
                             val id = response.body()!!._id
                             val password1 = response.body()!!.password
 
+                            Toast.makeText(this@LoginOtherActivity,id,Toast.LENGTH_SHORT).show()
+
                             municipality = Municipality(
                                 name,
                                 password1,
@@ -69,9 +70,9 @@ class LoginOtherActivity : AppCompatActivity() {
                             session =
                                 MunicipSession(this@LoginOtherActivity)
                             // Creating user login session
-                            session.createMunipSession(name, username1, password1, id)
+                            session.createMunipSession(name,id,password1,username1)
                             //intent
-                            val inte = Intent(this@LoginOtherActivity, RequestActivity::class.java)
+                            val inte = Intent(this@LoginOtherActivity, ReportsMunicipalityActivity::class.java)
                             inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
                             inte.putExtra("Mun", 5)

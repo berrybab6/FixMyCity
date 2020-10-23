@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:menu="@menu/nav_menu"
-        tools:context=".RequestActivity">
+        tools:context=".user.activity.RequestActivity">
     <FrameLayout android:layout_width="match_parent"
                  android:layout_above="@+id/bottom_navigation"
                  android:id="@+id/fragement_container"

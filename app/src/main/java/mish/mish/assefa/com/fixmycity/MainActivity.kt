@@ -6,8 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-        },2900)
+        },2000)
 
     }
 }

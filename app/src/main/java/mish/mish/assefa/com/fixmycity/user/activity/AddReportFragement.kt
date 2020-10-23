@@ -1,4 +1,4 @@
-package mish.mish.assefa.com.fixmycity
+package mish.mish.assefa.com.fixmycity.user.activity
 
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
@@ -22,12 +22,14 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragement_add_report.*
 import kotlinx.android.synthetic.main.fragement_add_report.view.*
 import kotlinx.android.synthetic.main.image_selector.view.*
+import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.Retrofit.*
-import mish.mish.assefa.com.fixmycity.data.controller.*
-import mish.mish.assefa.com.fixmycity.data.municipality.Municipalities
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
-import mish.mish.assefa.com.fixmycity.data.user.SessionClass
-import mish.mish.assefa.com.fixmycity.data.user.User
+import mish.mish.assefa.com.fixmycity.user.data.UploadImage
+import mish.mish.assefa.com.fixmycity.user.data.controller.SessionClass
+import mish.mish.assefa.com.fixmycity.user.data.getFileName
+import mish.mish.assefa.com.fixmycity.user.data.snackbar
+import mish.mish.assefa.com.fixmycity.user.data.user.User
 
 import retrofit2.Call
 
@@ -72,7 +74,7 @@ class AddReportFragement: Fragment() {
                 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
                 val imageStream: InputStream = this.requireContext().contentResolver.openInputStream(selectedImageUri)
                view?.report_image_iv?.setImageBitmap(BitmapFactory.decodeStream(imageStream))
-                //report.image = selectedImageUri.toString()
+                //report.photo_url = selectedImageUri.toString()
 
             } catch (exception: IOException) {
                 exception.printStackTrace()
@@ -84,7 +86,7 @@ class AddReportFragement: Fragment() {
             val extra: Bundle? = data?.extras
             val image: Bitmap = extra?.get("data") as Bitmap
             view?.report_image_iv?.setImageBitmap(image)
-            //report.image = data?.data.toString()
+            //report.photo_url = data?.data.toString()
 
         }
     }
@@ -192,7 +194,9 @@ class AddReportFragement: Fragment() {
                 var intent: Intent = Intent()
                 intent.setType("image/")
                 intent.setAction(Intent.ACTION_GET_CONTENT)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST)
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                    GALLERY_REQUEST
+                )
 
 
             }
@@ -214,7 +218,6 @@ class AddReportFragement: Fragment() {
             val image = report_image_iv
             val desc = report_description_etv.text.toString()
 
-
             val user = session.getUserDetails()
             val userEmail= user.getValue(session.KEY_EMAIL)
             val f=user.getValue(session.KEY_NAME)
@@ -224,7 +227,9 @@ class AddReportFragement: Fragment() {
             val i=user.getValue(session.KEY_ID)
             val p=user.getValue(session.KEY_PASSWORD)
             val t=user.getValue(session.KEY_SESSION)
-            val user1= User(f,l,p,e,i,u,t)
+            val user1= User(f, l, p, e, i, u, t)
+
+
 
           //map["userEmail"]=sessionManagement.getEmail()
             if (selectedImageUri == null) {
@@ -238,7 +243,14 @@ class AddReportFragement: Fragment() {
             val outputStream = FileOutputStream(file)
             inputStream.copyTo(outputStream)
 
-            report=ReportReq(desc,rName,rLocation,file.name,userEmail)
+            report=ReportReq()
+            report.description=desc
+            report.reported_to=rLocation
+            report.name=rName
+            report.reported_by=userEmail
+            report.photo_url=file.name
+
+
             val map = HashMap<String, String>()
             map["name"] = rName
             map["description"] = desc
@@ -251,13 +263,13 @@ class AddReportFragement: Fragment() {
                // val user=LoginResult()
 
           //  map2["user"]=sessionManagement.getSession()
-                //val body = UploadImage.UploadRequestBody(file, "image")
-                val call = retrofitInterface!!.addReport(
+                val body = UploadImage.UploadRequestBody(file, "image")
+                val call1 = retrofitInterface!!.addReport(
                     //MultipartBody.Part.createFormData("image", file.name, body),
-                    //RequestBody.create(MediaType.parse("multipart/form-data"), "json"),
+                    //RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
                     map
                 )
-                call.enqueue(object : Callback<ReportReq> {
+                call1.enqueue(object : Callback<ReportReq> {
 
                     override fun onFailure(call: Call<ReportReq>, t: Throwable) {
                         //t.message
@@ -279,11 +291,11 @@ class AddReportFragement: Fragment() {
 
                     override fun onResponse(call: Call<ReportReq>, response: Response<ReportReq>) {
                         if (response.code() == 200){
-                            report.image=response.body()!!.image
+                            report.photo_url=response.body()!!.photo_url
                             report.name=response.body()!!.name
                             report.description=response.body()!!.description
                             report.reported_by=response.body()!!.reported_by
-                            report.municipal=response.body()!!.municipal
+                            report.reported_to=response.body()!!.reported_to
 
                             builder.setMessage("Your report has been submitted succesfully!!!").setTitle("Submitted")
                                 .setCancelable(true)

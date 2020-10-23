@@ -1,22 +1,20 @@
 package mish.mish.assefa.com.fixmycity.Retrofit
 
-//import mish.mish.assefa.com.fixmycity.data.user.User
+//import mish.mish.assefa.com.fixmycity.user.data.user.User
 
 
-import mish.mish.assefa.com.fixmycity.data.municipality.Municipalities
-import mish.mish.assefa.com.fixmycity.data.report.Report
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
-import mish.mish.assefa.com.fixmycity.data.municipality.Municipality
-import mish.mish.assefa.com.fixmycity.data.report.Reports
-import mish.mish.assefa.com.fixmycity.data.user.User
+import mish.mish.assefa.com.fixmycity.municipality.data.Municipality
+import mish.mish.assefa.com.fixmycity.user.data.user.User
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 //import kotlin.collections
 
 //import retrofit2.http.POST
+
 
 interface IMyService {
 
@@ -31,12 +29,16 @@ interface IMyService {
 
     @POST("/reports")
     fun addReport(@Body map: HashMap<String, String>):Call<ReportReq>
-          //@Part file: MultipartBody.Part,
-          //@Part("file") image:RequestBody,
-          //@Part("body") map:HashMap<String,String>):Call<ReportReq>
+       // @Part file: MultipartBody.Part,
+        //@Part("file") photo_url: RequestBody,
+        //@Part("body") map:HashMap<String,String>):Call<ReportReq>
 
     @GET("/municipality/")
     fun getMunicip():Call<ArrayList<String>>
+
+   // @FormUrlEncoded
+    @GET("/reports/myReport/{id}")
+    fun getAllReports(@Path("id") id:String):Call<ArrayList<ReportReq>>
 
     @POST("/auth/activate/:token")
     fun activateToken(@Field("token") token:Boolean):Call<ActivateResult>
@@ -51,8 +53,8 @@ interface IMyService {
         @Body @Field("email") email:String
     ):Call<Void>
 
-    @GET("/reports")
-    suspend fun getReport(): Report
+    @GET("/reports/reportsForMe/{id}")
+    fun getReports(@Path("id") id:String):Call<ArrayList<ReportReq>>
 
 }
 

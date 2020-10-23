@@ -1,4 +1,4 @@
-package mish.mish.assefa.com.fixmycity
+package mish.mish.assefa.com.fixmycity.user.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,7 +16,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.login.LoginManager
+//import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 //import androidx.appcompat.app.AlertDialog
 //import androidx.appcompat.app.AppCompatActivity
@@ -30,17 +30,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.notification.view.*
+import mish.mish.assefa.com.fixmycity.LoginActivity
+import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.data.municipality.Municipalities
-import mish.mish.assefa.com.fixmycity.data.user.SessionClass
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
+import mish.mish.assefa.com.fixmycity.user.data.controller.SessionClass
+import mish.mish.assefa.com.fixmycity.municipality.activity.ReportsMunicipalityActivity
 import retrofit2.Retrofit
 
 
-class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationItemSelectedListener {
+class RequestActivity : BaseActivity() ,BottomNavigationView.OnNavigationItemSelectedListener {
    lateinit var mGoogleSignInClient:GoogleSignInClient
     lateinit var sessionClass: SessionClass
 
@@ -63,8 +63,6 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
 
     }
 
-
-
     //private lateinit var adapter: ArrayAdapter<String>
     val PASSWORD_PATTERN: Pattern = Pattern.compile(
         "^" +
@@ -84,7 +82,6 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.logout_menu -> {
-
                 //  signOut()
                 val i = intent.extras
                 if (i?.getInt("Google", 0) == 8) {
@@ -92,7 +89,7 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
                     Toast.makeText(this,"Google logout",Toast.LENGTH_SHORT).show()
                 }
                 else if(i?.getInt("Facebook",0)==3){
-                    LoginManager.getInstance().logOut()
+                    //LoginManager.getInstance().logOut()
 
                     val intent = Intent(this@RequestActivity, LoginActivity::class.java)
                     Toast.makeText(this,"logout From Facebook",Toast.LENGTH_SHORT).show()
@@ -100,22 +97,28 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
                     }
                 else if(i?.getInt("Fix",1)==5){
                     sessionClass= SessionClass(this)
+                    val user=sessionClass.getUserDetails()
+                    val email=user.getValue(sessionClass.KEY_EMAIL)
+                    Toast.makeText(this,email, Toast.LENGTH_SHORT).show()
                     sessionClass.logoutUser()
-                    Toast.makeText(this, "User Logged Out", Toast.LENGTH_SHORT).show()
+                }else{
+
+                    Toast.makeText(this@RequestActivity,"why does it is not working",Toast.LENGTH_SHORT).show()
                 }
             }
 
             R.id.nav_notif_icn -> {
-                /*val view: View = LayoutInflater.from(this@RequestActivity).inflate(R.layout.notification, null)
+                val view: View = LayoutInflater.from(this@RequestActivity).inflate(R.layout.notification, null)
                 val builder2: AlertDialog.Builder =AlertDialog.Builder(this@RequestActivity)
                 builder2.setView(view)
                 builder2.create().show()
                 view.notification_desc.text="Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong."
                 view.notification_ok.setOnClickListener {
-                    val intent=Intent(this,RequestActivity::class.java)
+                    val intent=Intent(this, RequestActivity::class.java)
                     startActivity(intent)
-                }*/
-                val intent=Intent(this@RequestActivity,ReportsMunicipalityActivity::class.java)
+                }
+                val intent=Intent(this@RequestActivity,
+                    ReportsMunicipalityActivity::class.java)
                 startActivity(intent)
                 Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
             }
@@ -192,7 +195,10 @@ class RequestActivity : AppCompatActivity() ,BottomNavigationView.OnNavigationIt
 
 
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragement_container, NewRequestFragement()).commit()
+        supportFragmentManager.beginTransaction().replace(
+            R.id.fragement_container,
+            NewRequestFragement()
+        ).commit()
         //relativee.visibility = View.VISIBLE
         val navigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
        navigationView.setOnNavigationItemSelectedListener(this)
