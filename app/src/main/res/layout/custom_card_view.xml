@@ -23,7 +23,7 @@
                     android:id="@+id/title_card_tv"
                     android:text="Grafitti Report"
                     android:textSize="25sp"
-
+                    android:textIsSelectable="true"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
@@ -79,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <TextView
+                        android:textIsSelectable="true"
                         android:id="@+id/description_custom_tv"
                         android:layout_weight="3"
                         android:text="fjvnfjv jfvnjkfvn jkvnkjfvnfkj knvkfnv jnskd njnvkfv kjndknkfv kjdnjfnjv jnvkvnkvnkvnknvk jnjnvkdvnkdvnkdkvnnnnnnnnn kfjjjjj jfffff jfvnjfv jjnfvjfnvk kdfjnkd kdnel;emsd ks vlfvklfkf vjff"
@@ -104,7 +105,7 @@
                         android:layout_marginTop="20dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-
+                       android:textIsSelectable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
                     android:layout_height="wrap_content">
      <EditText
-
+        android:textIsSelectable="true"
         android:background="@null"
        android:inputType="textAutoCorrect"
     android:hint="Name"
@@ -42,7 +42,7 @@
 
 
     <EditText
-
+            android:textIsSelectable="true"
             android:background="@null"
             android:inputType="textAutoCorrect"
             android:hint="Description"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content">
         <EditText
 
-
+                android:textIsSelectable="true"
                 android:inputType="textAutoCorrect"
                 android:hint="Add Report"
                 android:layout_marginTop="20dp"

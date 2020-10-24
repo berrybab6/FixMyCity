@@ -84,26 +84,26 @@ class RequestActivity : BaseActivity() ,BottomNavigationView.OnNavigationItemSel
             R.id.logout_menu -> {
                 //  signOut()
                 val i = intent.extras
-                if (i?.getInt("Google", 0) == 8) {
-                    signOut()
-                    Toast.makeText(this,"Google logout",Toast.LENGTH_SHORT).show()
-                }
-                else if(i?.getInt("Facebook",0)==3){
-                    //LoginManager.getInstance().logOut()
-
-                    val intent = Intent(this@RequestActivity, LoginActivity::class.java)
-                    Toast.makeText(this,"logout From Facebook",Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
+                when {
+                    i?.getInt("Google", 0) == 8 -> {
+                        signOut()
+                        Toast.makeText(this,"Google logout",Toast.LENGTH_SHORT).show()
                     }
-                else if(i?.getInt("Fix",1)==5){
-                    sessionClass= SessionClass(this)
-                    val user=sessionClass.getUserDetails()
-                    val email=user.getValue(sessionClass.KEY_EMAIL)
-                    Toast.makeText(this,email, Toast.LENGTH_SHORT).show()
-                    sessionClass.logoutUser()
-                }else{
+                    i?.getInt("Facebook",0)==3 -> {
+                        //LoginManager.getInstance().logOut()
 
-                    Toast.makeText(this@RequestActivity,"why does it is not working",Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@RequestActivity, LoginActivity::class.java)
+                        Toast.makeText(this,"logout From Facebook",Toast.LENGTH_SHORT).show()
+                        startActivity(intent)
+                    }
+                    i?.getInt("Fix",1)==5 -> {
+                        sessionClass= SessionClass(this)
+                        val user=sessionClass.getUserDetails()
+                        val email=user.getValue(sessionClass.KEY_EMAIL)
+                        Toast.makeText(this,email, Toast.LENGTH_SHORT).show()
+                        sessionClass.logoutUser()
+                    }
+                    else -> Toast.makeText(this@RequestActivity,"why does it is not working",Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -117,9 +117,7 @@ class RequestActivity : BaseActivity() ,BottomNavigationView.OnNavigationItemSel
                     val intent=Intent(this, RequestActivity::class.java)
                     startActivity(intent)
                 }
-                val intent=Intent(this@RequestActivity,
-                    ReportsMunicipalityActivity::class.java)
-                startActivity(intent)
+
                 Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
             }
             R.id.changepassword_menu -> {

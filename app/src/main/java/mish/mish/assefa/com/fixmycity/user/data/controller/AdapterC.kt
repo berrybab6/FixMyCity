@@ -1,6 +1,7 @@
 package mish.mish.assefa.com.fixmycity.user.data.controller
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 //import android.support.v7.widget.RecyclerView
@@ -12,11 +13,14 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.custom_card_view.view.*
+import kotlinx.android.synthetic.main.fragement_add_report.view.*
 import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
+import java.io.InputStream
 
 class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
     private var reportResponses = arrayListOf<ReportReq>()
+    val _context=context
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
        val v =LayoutInflater.from(p0.context).inflate(R.layout.custom_card_view,p0,false)
@@ -73,6 +77,7 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
            // val reportTimeMap=report.getReportDate(report.created_at)
             //val reportTime=reportTimeMap["day"].toString()
             itemView.hour_ago_card.text = "4hr ago"
+
             //val string=report.photo_url
             //val myBitmap = BitmapFactory.decodeFile(string)
                // val a=report.imageStringToBitmap(report.photo_url!!)

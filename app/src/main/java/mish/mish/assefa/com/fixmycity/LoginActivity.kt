@@ -82,15 +82,10 @@ class LoginActivity : BaseActivity() {
             }
 
            session.isLoggedIn() -> {
-
-
                 val inte = Intent(this@LoginActivity, RequestActivity::class.java)
                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-
                // inte.putExtra("user", isLoggedIn)
                 inte.putExtra("Fix", 5)
-
-
                 startActivity(inte)
             }
             account!=null-> {
@@ -156,7 +151,7 @@ class LoginActivity : BaseActivity() {
                             // Creating user login session
                             session.createLoginSession(first_name1,last_name1,email1,id1,token3,password1,username1)
 
-                        Toast.makeText(this@LoginActivity,"token: $token3 ,$email1",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@LoginActivity,"token: $email1",Toast.LENGTH_LONG).show()
 
                             login_error.text = ""
                             Log.d("ActivityCallback", response.body()?.email)

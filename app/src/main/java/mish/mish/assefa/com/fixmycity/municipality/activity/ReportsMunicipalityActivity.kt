@@ -31,8 +31,12 @@ import java.util.regex.Pattern
 class ReportsMunicipalityActivity : BaseActivity(),
     Clicked {
 
-    lateinit var sessionClass: MunicipSession
+    //lateinit var sessionClass: MunicipSession
 
+    override fun onStart() {
+        super.onStart()
+
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.nav_menu, menu)
@@ -54,11 +58,11 @@ class ReportsMunicipalityActivity : BaseActivity(),
                 //  signOut()
                 val i = intent.extras
                 if(i?.getInt("Mun",1)==5){
-                    sessionClass= MunicipSession(this)
-                    val user=sessionClass.getMunipDetails()
-                    val userName=user.getValue(sessionClass.KEY_USERNAME)
+                    municipSession= MunicipSession(this)
+                    val user=municipSession.getMunipDetails()
+                    val userName=user.getValue(municipSession.KEY_USERNAME)
                     Toast.makeText(this,userName, Toast.LENGTH_SHORT).show()
-                    sessionClass.logoutUser()
+                    municipSession.logoutUser()
                 }else{
 
                     Toast.makeText(this@ReportsMunicipalityActivity,"why does it is not working",Toast.LENGTH_SHORT).show()

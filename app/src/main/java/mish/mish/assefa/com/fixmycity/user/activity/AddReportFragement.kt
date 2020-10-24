@@ -42,6 +42,7 @@ import java.util.HashMap
 
 const val GALLERY_REQUEST:Int=100
 const val CAMERA_REQUEST:Int=200
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class AddReportFragement: Fragment() {
     private lateinit var session: SessionClass
    // lateinit var municipalities: Municipalities
@@ -84,9 +85,10 @@ class AddReportFragement: Fragment() {
 
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             val extra: Bundle? = data?.extras
+            //selectedImageUri=
             val image: Bitmap = extra?.get("data") as Bitmap
             view?.report_image_iv?.setImageBitmap(image)
-            //report.photo_url = data?.data.toString()
+
 
         }
     }

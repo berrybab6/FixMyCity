@@ -25,6 +25,21 @@ class LoginOtherActivity : BaseActivity() {
     lateinit var municipality: Municipality
     lateinit var session: MunicipSession
 
+    override fun onStart() {
+        super.onStart()
+
+        session= MunicipSession(this)
+
+
+        session= MunicipSession(this)
+        if (session.isLoggedIn()){
+            val intent=Intent(this@LoginOtherActivity,ReportsMunicipalityActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            // inte.putExtra("user", isLoggedIn)
+            intent.putExtra("Mun", 5)
+            startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
