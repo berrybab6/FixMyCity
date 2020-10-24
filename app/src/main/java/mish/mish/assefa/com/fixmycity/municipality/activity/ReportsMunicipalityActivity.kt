@@ -53,7 +53,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
             R.id.logout_menu -> {
                 //  signOut()
                 val i = intent.extras
-                if(i?.getInt("Fix",1)==5){
+                if(i?.getInt("Mun",1)==5){
                     sessionClass= MunicipSession(this)
                     val user=sessionClass.getMunipDetails()
                     val userName=user.getValue(sessionClass.KEY_USERNAME)
@@ -76,9 +76,9 @@ class ReportsMunicipalityActivity : BaseActivity(),
                         ReportsMunicipalityActivity::class.java)
                     startActivity(intent)
                 }
-                val intent= Intent(this@ReportsMunicipalityActivity,
+                /*val intent= Intent(this@ReportsMunicipalityActivity,
                     ReportsMunicipalityActivity::class.java)
-                startActivity(intent)
+                startActivity(intent)*/
                 Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
             }
             R.id.changepassword_menu -> {
@@ -138,6 +138,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reports_municipality)
+        this.title="Requests"
         municipSession=
             MunicipSession(this@ReportsMunicipalityActivity)
         val municipality = municipSession.getMunipDetails()

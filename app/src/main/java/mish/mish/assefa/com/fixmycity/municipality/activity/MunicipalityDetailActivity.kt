@@ -111,8 +111,9 @@ class MunicipalityDetailActivity : BaseActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_municipality_detail)
 
+        setContentView(R.layout.activity_municipality_detail)
+        this.title="Reports"
         val arrayList=ArrayList<ReportReq>()
 
         reportReq= ReportReq()

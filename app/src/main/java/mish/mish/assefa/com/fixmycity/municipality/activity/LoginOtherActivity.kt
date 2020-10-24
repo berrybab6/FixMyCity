@@ -26,7 +26,6 @@ class LoginOtherActivity : BaseActivity() {
     lateinit var session: MunicipSession
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_other)

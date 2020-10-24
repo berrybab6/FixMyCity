@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
                 private var retrofit: Retrofit? = null
-                const val BASE_URL = "http://192.168.1.5:1000"
+                const val BASE_URL = "http://192.168.1.3:1000"
 
        // val httpLoggingInterceptor=HttpLoggingIntercept
        val okHttpClient = OkHttpClient.Builder()

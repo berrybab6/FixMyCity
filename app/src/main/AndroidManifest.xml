@@ -18,6 +18,7 @@
         <activity android:name=".framework.base.BaseActivity">
         </activity>
         <activity
+                android:label="Reports"
                 android:name=".municipality.activity.MunicipalityDetailActivity"
                 android:theme="@style/AppTheme.ActionBar">
         </activity>
