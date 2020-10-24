@@ -44,7 +44,7 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         p0.bindItems(reportResponses[p1])
 
-        p0.expandableLayout.visibility
+       // p0.expandableLayout.visibility
 
         p0.itemView.setOnClickListener {
             if (p1==0){
@@ -69,7 +69,7 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
             } else {
                 itemView.status_resolve_tv.text = "Not Resolved"
                 itemView.status_resolve_tv.setTextColor(Color.RED)
-                itemView.rate_stars_custom.visibility=GONE
+                //itemView.rate_stars_custom.visibility=GONE
                 itemView.see_more_tv.visibility= GONE
                 itemView.status_icon_tv.setBackgroundResource(R.drawable.offline1)
             }
@@ -83,13 +83,13 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
                // val a=report.imageStringToBitmap(report.photo_url!!)
 
             //itemView.location_image_iv.setImageBitmap(a)
-            itemView.location_custom_tv.text = report.reported_to
+            //itemView.location_custom_tv.text = report.reported_to
             itemView.description_custom_tv.text = report.description
 
-            var expandableLayout: LinearLayout = itemView.expandable_layout_1
+           // var expandableLayout: LinearLayout = itemView.expandable_layout_1
 
             }
-            var expandableLayout: LinearLayout = itemView.expandable_layout_1
+          //  var expandableLayout: LinearLayout = itemView.expandable_layout_1
 
         }
 

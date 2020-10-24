@@ -86,6 +86,7 @@ class AddReportFragement: Fragment() {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             val extra: Bundle? = data?.extras
             //selectedImageUri=
+            selectedImageUri=data!!.data
             val image: Bitmap = extra?.get("data") as Bitmap
             view?.report_image_iv?.setImageBitmap(image)
 
