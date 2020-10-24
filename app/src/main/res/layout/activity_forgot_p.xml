@@ -27,7 +27,7 @@
 
 
         <EditText
-                android:id="@+id/forgot_email_edt"
+                android:id="@+id/forgot_email_edt2"
 
                 android:hint="Email"
                 android:inputType="textAutoComplete|textEmailAddress"

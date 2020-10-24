@@ -21,12 +21,12 @@ class ForgotPActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_p)
 
-        val email=forgot_email_edt.text.toString()
-        val map1= HashMap<String,String>()
-        map1["email"]=email
+
         retrofitInterface = retrofit!!.create(IMyService::class.java)
         forgot_btn.setOnClickListener {
-
+            val email=forgot_email_edt2.text.toString()
+            val map1= HashMap<String,String>()
+            map1["email"]=email
 
            val call = retrofitInterface!!.forgetPassword(map1)
               call.enqueue(object : Callback<Void> {
@@ -36,7 +36,7 @@ class ForgotPActivity : BaseActivity() {
                     }
                     else{
                     Toast.makeText(this@ForgotPActivity,response.message(),Toast.LENGTH_SHORT).show()
-                    val inte = Intent(this@ForgotPActivity, LoginActivity::class.java)
+                    val inte = Intent(this@ForgotPActivity, ResetPasswordActivity::class.java)
                     startActivity(inte)}
                 }
 

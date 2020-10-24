@@ -23,6 +23,8 @@ interface IMyService {
     @POST("/auth/signup")
     fun executeSignup(@Body map: HashMap<String, String>): Call<Void>
 
+    @PUT("/auth/reset-password")
+    fun resetPassword(@Body map: HashMap<String, String>):Call<User>
 
     @POST("/municipality/login")
     fun executeLoginMun(@Body map: HashMap<String, String>):Call<Municipality>
