@@ -246,13 +246,6 @@ class AddReportFragement: Fragment() {
             val outputStream = FileOutputStream(file)
             inputStream.copyTo(outputStream)
 
-            report=ReportReq()
-            report.description=desc
-            report.reported_to=rLocation
-            report.name=rName
-            report.reported_by=userEmail
-            report.photo_url=file.name
-
 
             val map = HashMap<String, String>()
             map["name"] = rName
@@ -276,6 +269,15 @@ class AddReportFragement: Fragment() {
 
                     override fun onFailure(call: Call<ReportReq>, t: Throwable) {
                         //t.message
+
+                        report= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
+                            "Bole Sub City","sd","Misha",
+                            false,
+                            false,
+                            "3hr ago",
+                            false,
+                            "0"
+                        )
                         builder.setMessage(t.localizedMessage)
                             .setTitle("why")
                             .setCancelable(true)
@@ -294,11 +296,24 @@ class AddReportFragement: Fragment() {
 
                     override fun onResponse(call: Call<ReportReq>, response: Response<ReportReq>) {
                         if (response.code() == 200){
-                            report.photo_url=response.body()!!.photo_url
-                            report.name=response.body()!!.name
-                            report.description=response.body()!!.description
-                            report.reported_by=response.body()!!.reported_by
-                            report.reported_to=response.body()!!.reported_to
+                            val photo=response.body()!!.photo_url
+                            val name=response.body()!!.name
+                            val desc=response.body()!!.description
+                            val reported_by=response.body()!!.reported_by
+                            val reported_to=response.body()!!.reported_to
+                            val reported_At:String=response.body()!!.created_at
+
+                            report=ReportReq(
+                                desc,
+                                name,
+                                reported_to,
+                                photo,
+                                reported_by,
+                                false,false,
+                                reported_At,
+                                false,
+                                "0hr ago"
+                            )
 
                             builder.setMessage("Your report has been submitted succesfully!!!").setTitle("Submitted")
                                 .setCancelable(true)
@@ -327,6 +342,15 @@ class AddReportFragement: Fragment() {
                             report_description_etv?.setText("")
                             reportlocation_etv?.setText("")
                             reportname_etv?.setText("")
+
+                            report= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
+                                "Bole Sub City","sd","Misha",
+                                false,
+                                false,
+                                "3hr ago",
+                                false,
+                                "0"
+                            )
 
                             Toast.makeText(activity, rLocation, Toast.LENGTH_LONG).show()
 

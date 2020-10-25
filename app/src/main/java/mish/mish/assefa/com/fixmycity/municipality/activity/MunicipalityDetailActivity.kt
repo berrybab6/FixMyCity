@@ -113,19 +113,19 @@ class MunicipalityDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_municipality_detail)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val intent=intent.extras
         val arrayList=ArrayList<ReportReq>()
 
-        reportReq= ReportReq()
-        reportReq.reported_by="bedatuassefa@gmail.com"
-        reportReq.photo_url="dd"
-        reportReq.name="Pothole"
-        reportReq.reported_to="Bole Sub City Administration"
-        reportReq.description="Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff"
-        //reportReq.expandeble=false
-        reportReq.created_at="8hr ago"
-        reportReq.report_status=false
+        reportReq= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
+            "Bole Sub City","sd","Misha",
+            false,
+            false,
+            "3hr ago",
+            false,
+            "0"
+            )
+
 
         for(i in 0..15){
             arrayList.add(reportReq)}

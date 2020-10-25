@@ -12,20 +12,19 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class ReportReq:Serializable {
-
-    var description: String? = ""
-    var name: String? = ""
-    var reported_to: String? = ""
+class ReportReq(
+    var description: String? ,
+    var name: String? ,
+    var reported_to: String? ,
     //val photo_url:String=""
-    var photo_url: String? = ""
-    var reported_by: String? = ""
+    var photo_url: String? ,
+    var reported_by: String? ,
 
-    var isResolved: Boolean = false
-    var report_status: Boolean = false
-    var created_at: String = "4hr ago"
-    var is_rated: Boolean = false
-    var updated_at: String = ""
+    var isResolved: Boolean = false,
+    var report_status: Boolean = false,
+    var created_at: String ,
+    var is_rated: Boolean = false,
+    var updated_at: String ):Serializable
 /*
     fun imageStringToBitmap(string: String): Bitmap? {
        // val myBitmap = BitmapFactory.decodeFile(string.getAbsolutePath())
@@ -67,6 +66,6 @@ class ReportReq:Serializable {
         day["month"]=now.monthValue
         return day
     }*/
-}
+
 
 

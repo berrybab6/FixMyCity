@@ -27,7 +27,7 @@ import mish.mish.assefa.com.fixmycity.R
 import org.intellij.lang.annotations.Identifier
 
 
-class AdapterC(val context:Context,val listener:()->Unit) : RecyclerView.Adapter<ViewHolder>(){
+class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>(){
 
 
     private var reportResponses = arrayListOf<ReportReq>()
