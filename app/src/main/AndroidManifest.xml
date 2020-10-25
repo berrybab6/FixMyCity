@@ -21,8 +21,8 @@
         </activity>
         <activity
                 android:name=".municipality.activity.MunicipalityDetailActivity"
-                android:label="Reports"
-                android:parentActivityName=".municipality.activity.ReportsMunicipalityActivity"
+
+                android:parentActivityName=".LoginActivity"
                 android:theme="@style/AppTheme.ActionBar">
         </activity>
         <activity

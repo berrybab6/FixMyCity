@@ -14,7 +14,7 @@ class SessionClass (var context:Context) {
 
     /** Sharedpref file name*/
     private val PREF_NAME: String = "AndroidHivePref"
-    private val IS_LOGIN = "isLoggedIn"
+    val IS_LOGIN = "isLoggedIn"
 
     val KEY_NAME = "first_name"
     val KEY_EMAIL = "userEmail"

@@ -103,12 +103,18 @@ class MunicipalityDetailActivity : BaseActivity() {
 
                     }
                 }
-            }
+            }R.id.homeAsUp->{
+            Toast.makeText(this,"hhh",Toast.LENGTH_LONG).show()
+            finish()
+            return true
+        }
             else -> super.onOptionsItemSelected(item)
 
         }
         return true
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

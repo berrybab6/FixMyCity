@@ -48,7 +48,7 @@ class LoginActivity : BaseActivity() {
     //Google Sign in
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var session: SessionClass
+    //lateinit var session: SessionClass
     //lateinit var user:User
     //val BASE_URL = "http://192.168.1.2:3000" // your Ip Address
 
@@ -63,14 +63,16 @@ class LoginActivity : BaseActivity() {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
        // Initializing Session Class
-        session= SessionClass(this)
+       // session= SessionClass(this)
 
-
+        lateinit var session:SessionClass
+        session= SessionClass(this@LoginActivity)
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         val isLoggedinFb = isLoggedIn()
-
+        val a=session.getUserDetails()
+        val n=a[session.KEY_EMAIL]
 
 
         when {
@@ -78,17 +80,21 @@ class LoginActivity : BaseActivity() {
                 val inte: Intent = Intent(this@LoginActivity, RequestActivity::class.java)
                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 inte.putExtra("Facebook", 3)
+                Toast.makeText(this@LoginActivity,"Faceboooooooooook",Toast.LENGTH_LONG).show()
                 startActivity(inte)
             }
 
-           session.isLoggedIn() -> {
+           n?.isNotEmpty()!! -> {
                 val inte = Intent(this@LoginActivity, RequestActivity::class.java)
                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                // inte.putExtra("user", isLoggedIn)
+               Toast.makeText(this@LoginActivity,"Fix My City",Toast.LENGTH_LONG).show()
                 inte.putExtra("Fix", 5)
+
                 startActivity(inte)
             }
             account!=null-> {
+                Toast.makeText(this@LoginActivity,"Goooglrrrrr",Toast.LENGTH_LONG).show()
                 val inte: Intent = Intent(this@LoginActivity, RequestActivity::class.java)
                 inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 inte.putExtra("Google", 8)
@@ -103,7 +109,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(mish.mish.assefa.com.fixmycity.R.layout.activity_login)
 
-
+        lateinit var session:SessionClass
         retrofitInterface = retrofit!!.create(IMyService::class.java)
 
 
