@@ -14,11 +14,22 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.custom_card_view.view.*
 import kotlinx.android.synthetic.main.fragement_add_report.view.*
-import mish.mish.assefa.com.fixmycity.R
+//import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
 import java.io.InputStream
+import android.graphics.drawable.Drawable
+//import android.R
+//import android.R
+import android.content.res.Resources
+import android.widget.ImageView
+import androidx.browser.customtabs.CustomTabsClient.getPackageName
+import mish.mish.assefa.com.fixmycity.R
+import org.intellij.lang.annotations.Identifier
 
-class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
+
+class AdapterC(val context:Context,val listener:()->Unit) : RecyclerView.Adapter<ViewHolder>(){
+
+
     private var reportResponses = arrayListOf<ReportReq>()
     val _context=context
 
@@ -40,17 +51,21 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>() {
     }
 
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        p0.bindItems(reportResponses[p1])
+        val item=reportResponses[p1]
+        p0.bindItems(item)
 
        // p0.expandableLayout.visibility
+        val uri = "@drawable/expand_less"  // where myresource (without the extension) is the file
 
-        p0.itemView.setOnClickListener {
-            if (p1==0){
 
-            }
+
+        p0.itemView.expand_ib.setOnClickListener {
+            p0.itemView.expand_ib.setImageResource(R.drawable.expand_less)
         }
+
 
     }
 }

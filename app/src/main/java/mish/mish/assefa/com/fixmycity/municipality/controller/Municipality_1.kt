@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.custom_card_view.view.hour_ago_card
 import kotlinx.android.synthetic.main.custom_card_view.view.status_icon_tv
 import kotlinx.android.synthetic.main.custom_card_view.view.title_card_tv
+import kotlinx.android.synthetic.main.municipdetail.view.*
 import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
 
-class Municipality_1(var clicked: Clicked, val context:Context):RecyclerView.Adapter<MunicipalityHolder>() {
+class Municipality_1(var listener:(ReportReq)->Unit, val context:Context):RecyclerView.Adapter<MunicipalityHolder>() {
     private var reportResponses = arrayListOf<ReportReq>()
     // private lateinit var clickedItem:Clicked
 
@@ -27,9 +28,12 @@ class Municipality_1(var clicked: Clicked, val context:Context):RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: MunicipalityHolder, position: Int) {
+        val item=reportResponses[position]
 
-        holder.bindItems(reportResponses.get(position), clicked)
-
+        holder.bindItems(item) //, clicked)
+        holder.itemView.setOnClickListener {
+            listener(item)
+        }
 
     }
 
@@ -38,11 +42,11 @@ class Municipality_1(var clicked: Clicked, val context:Context):RecyclerView.Ada
         notifyDataSetChanged()
     }
 }
-    interface Clicked {
+    /*interface Clicked {
         fun clickedReport(report: ReportReq,position: Int)
     }
 
-
+*/
 
 class MunicipalityHolder(itemView: View):RecyclerView.ViewHolder(itemView)//,View.OnClickListener
 {
@@ -52,7 +56,7 @@ class MunicipalityHolder(itemView: View):RecyclerView.ViewHolder(itemView)//,Vie
     val report_time=itemView.hour_ago_card.text.toString()
 
 
-    fun bindItems(report: ReportReq,action: Clicked){
+    fun bindItems(report: ReportReq){//,action: Clicked){
         itemView.title_card_tv.text = report.name
         if (report.isResolved) {
             itemView.status_icon_tv.setBackgroundResource(R.drawable.onlineee)
@@ -60,9 +64,11 @@ class MunicipalityHolder(itemView: View):RecyclerView.ViewHolder(itemView)//,Vie
             itemView.status_icon_tv.setBackgroundResource(R.drawable.offline1)
         }
         itemView.hour_ago_card.text = "6hr ago"//report.created_at
+
+        /*
         itemView.setOnClickListener {
-            action.clickedReport(report,adapterPosition)
-        }
+            //action.clickedReport(report,adapterPosition)
+        }*/
 
         /*itemView.title_card_tv.setOnClickListener {
                 clickedItem.clickedReport(report)

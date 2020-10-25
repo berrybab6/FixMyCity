@@ -13,11 +13,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_reports_municipality.*
 import kotlinx.android.synthetic.main.change_password.view.*
+import kotlinx.android.synthetic.main.custom_card_view.*
 import kotlinx.android.synthetic.main.notification.view.*
 import mish.mish.assefa.com.fixmycity.R
 import mish.mish.assefa.com.fixmycity.Retrofit.IMyService
 import mish.mish.assefa.com.fixmycity.Retrofit.RetrofitClient
-import mish.mish.assefa.com.fixmycity.municipality.controller.Clicked
+//import mish.mish.assefa.com.fixmycity.municipality.controller.Clicked
 import mish.mish.assefa.com.fixmycity.municipality.controller.Municipality_1
 import mish.mish.assefa.com.fixmycity.municipality.controller.MunicipSession
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
@@ -28,8 +29,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.regex.Pattern
 
-class ReportsMunicipalityActivity : BaseActivity(),
-    Clicked {
+class ReportsMunicipalityActivity : BaseActivity(){
 
     //lateinit var sessionClass: MunicipSession
 
@@ -52,6 +52,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
     )
 
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.logout_menu -> {
@@ -65,7 +66,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
                     municipSession.logoutUser()
                 }else{
 
-                    Toast.makeText(this@ReportsMunicipalityActivity,"why does it is not working",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReportsMunicipalityActivity,"why does it not working",Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -120,12 +121,13 @@ class ReportsMunicipalityActivity : BaseActivity(),
         }
         return true
     }
+    /*
     override fun clickedReport(report: ReportReq, position: Int) {
         Toast.makeText(this@ReportsMunicipalityActivity,report.name,Toast.LENGTH_SHORT).show()
         /*val intent= Intent(this@ReportsMunicipalityActivity,MunicipalityDetailActivity::class.java)
         intent.putExtra("data",report)
         startActivity(intent)*/
-    }
+    }*/
 
 
 
@@ -137,7 +139,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
 
     lateinit var myAdapter: Municipality_1
     //private lateinit var linearLayoutManager: LinearLayoutManager
-
+    private var reportList= arrayListOf<ReportReq>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,7 +154,11 @@ class ReportsMunicipalityActivity : BaseActivity(),
 
         recycler_munip_1?.layoutManager= LinearLayoutManager(this)
         myAdapter= Municipality_1(
-            this,
+            {item-> val intent= Intent(this@ReportsMunicipalityActivity,MunicipalityDetailActivity::class.java)
+        intent.putExtra("data",item.name)
+
+                intent.putExtra("Mun",5)
+        startActivity(intent)},
             this@ReportsMunicipalityActivity
         )
         recycler_munip_1?.adapter=myAdapter
@@ -173,7 +179,7 @@ class ReportsMunicipalityActivity : BaseActivity(),
                 //To change body of created functions use File | Settings | File Templates.
                 if (response.isSuccessful){
                     Toast.makeText(this@ReportsMunicipalityActivity,response.message(),Toast.LENGTH_LONG).show()
-                    val reportList = response.body()!!
+                     reportList = response.body()!!
                     myAdapter.setData(reportList)
                     recycler_munip_1.adapter=myAdapter
 

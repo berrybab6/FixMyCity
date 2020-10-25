@@ -23,7 +23,7 @@ import java.util.regex.Pattern
 
 class MunicipalityDetailActivity : BaseActivity() {
     private lateinit var reportReq: ReportReq
-    lateinit var report: Report
+    //lateinit var report: Report
     lateinit var sessionClass: MunicipSession
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,7 +46,7 @@ class MunicipalityDetailActivity : BaseActivity() {
             R.id.logout_menu -> {
                 //  signOut()
                 val i = intent.extras
-                if(i?.getInt("Fix",1)==5){
+                if(i?.getInt("Mun",1)==5){
                     sessionClass= MunicipSession(this)
                     val user=sessionClass.getMunipDetails()
                     val userName=user.getValue(sessionClass.KEY_USERNAME)
@@ -113,7 +113,8 @@ class MunicipalityDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_municipality_detail)
-        this.title="Reports"
+
+        val intent=intent.extras
         val arrayList=ArrayList<ReportReq>()
 
         reportReq= ReportReq()
@@ -129,7 +130,7 @@ class MunicipalityDetailActivity : BaseActivity() {
         for(i in 0..15){
             arrayList.add(reportReq)}
 
-        this.title=report.reportReq.name
+        this.title=intent.getString("data")
         val myAdapter= Municip_Detail(arrayList, this)
 
         recycler_munip_detail.layoutManager= LinearLayoutManager(this)

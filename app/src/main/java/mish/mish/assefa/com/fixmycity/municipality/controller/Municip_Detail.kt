@@ -25,12 +25,12 @@ class Municip_Detail(var arratList: ArrayList<ReportReq>, val context: Context):
 
     inner class MunicipalityDetailHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener
     {
-        val reportTitle=view.title_card_tv.toString()
-        val report_status=view.status_icon_tv
-        val report_time=view.hour_ago_card
+       // val reportTitle=view.title_card_tv.text.toString()
+        //val report_status=view.status_icon_tv
+        //val report_time=view.hour_ago_card
         override fun onClick(v: View?) {
             val position=adapterPosition
-            Toast.makeText(context,"$reportTitle  $position", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context," $position", Toast.LENGTH_SHORT).show()
         }
 
         init {
@@ -40,7 +40,7 @@ class Municip_Detail(var arratList: ArrayList<ReportReq>, val context: Context):
 
 
         fun bindItems(report: ReportReq) {
-            itemView.title_card_tv.text = report.name
+            //itemView.title_card_tv.text = report.name
             if (report.isResolved) {
                 //itemView.status_icon_tv.setBackgroundResource(R.drawable.onlineee)
                 itemView.isResolved_tv.text = "Resolved"
@@ -62,7 +62,7 @@ class Municip_Detail(var arratList: ArrayList<ReportReq>, val context: Context):
                 itemView.is_assigned_btn.visibility= VISIBLE
                 //itemView.status_icon_tv.setBackgroundResource(R.drawable.offline1)
             }
-            itemView.hour_ago_card.text = report.created_at
+           // itemView.hour_ago_card.text = report.created_at
             itemView.location_municip_tv.text = report.reported_to
             itemView.description_municip_tv.text = report.description
 

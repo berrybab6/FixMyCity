@@ -11,9 +11,9 @@
               android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView android:layout_width="match_parent"
-                                       android:clickable="true"
+
                                        android:layout_height="wrap_content"
-                                       android:focusable="true">
+                                       >
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linear_1"
                 android:orientation="horizontal"
@@ -24,7 +24,7 @@
             <TextView
                     android:id="@+id/title_card_tv"
                     android:text="Grafitti Report"
-                    android:textSize="25sp"
+                    android:textSize="21sp"
                     android:textIsSelectable="true"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -50,7 +50,7 @@
             <TextView
                     app:layout_constraintEnd_toEndOf="@id/expand_ib"
                     android:text="3hr ago"
-                    android:textSize="25sp"
+                    android:textSize="21sp"
 
                     android:id="@+id/hour_ago_card"
                     android:textColor="@color/black"
@@ -63,18 +63,20 @@
             <ImageView
 
                     android:id="@+id/expand_ib"
-                    android:src="@drawable/expand_less"
+                    android:src="@drawable/expand_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/hour_ago_card"
                     app:layout_constraintTop_toTopOf="@+id/hour_ago_card"
                     app:layout_constraintHorizontal_bias="0.636"
-                    app:layout_constraintBottom_toBottomOf="@+id/hour_ago_card" android:layout_marginLeft="28dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/hour_ago_card"
+                    android:layout_marginLeft="28dp"
                     android:layout_marginStart="28dp"/>
 
 
             <TextView
+                    android:visibility="gone"
                     android:textIsSelectable="true"
                     android:id="@+id/description_custom_tv"
                     android:layout_weight="3"
@@ -88,7 +90,7 @@
                     android:layout_marginTop="20dp"/>
 
             <ImageView
-
+                    android:visibility="gone"
                     android:foreground="@drawable/location_foreground"
                     android:id="@+id/location_image_iv"
                     android:src="@drawable/brokencar"
@@ -103,7 +105,7 @@
 
 
             <TextView
-
+                    android:visibility="gone"
                     android:id="@+id/location_custom_tv"
                     android:text="Around Mexico"
                     android:textSize="22sp"
@@ -119,7 +121,7 @@
 
 
             <TextView
-
+                    android:visibility="gone"
                     android:id="@+id/status_resolve_tv"
 
                     android:text="Not Resolved"
@@ -136,7 +138,7 @@
 
 
             <ImageView
-
+                    android:visibility="gone"
                     android:src="@drawable/rate_star_grey"
                     android:id="@+id/star_1_iv"
                     android:layout_width="wrap_content"
@@ -146,7 +148,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/star_2_iv"
             />
             <ImageView
-
+                    android:visibility="gone"
                     android:src="@drawable/rate_star_grey"
                     android:id="@+id/star_2_iv"
                     android:layout_width="wrap_content"
@@ -155,7 +157,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/star_4_iv"
                     app:layout_constraintTop_toTopOf="@+id/star_3_iv"/>
             <ImageView
-
+                    android:visibility="gone"
                     android:src="@drawable/rate_star_grey"
                     android:id="@+id/star_3_iv"
                     android:layout_width="wrap_content"
@@ -163,7 +165,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/star_4_iv"
                     app:layout_constraintTop_toTopOf="@+id/star_4_iv"/>
             <ImageView
-
+                    android:visibility="gone"
                     android:src="@drawable/rate_star_grey"
                     android:id="@+id/star_4_iv"
                     android:layout_width="wrap_content"
@@ -172,7 +174,7 @@
                     app:layout_constraintTop_toTopOf="@+id/star_5_iv"
                     app:layout_constraintBottom_toBottomOf="@+id/star_5_iv"/>
             <ImageView
-
+                    android:visibility="gone"
                     android:src="@drawable/rate_star_grey"
                     android:id="@+id/star_5_iv"
                     android:layout_width="wrap_content"
