@@ -18,6 +18,7 @@ import kotlin.collections.HashMap
 
 interface IMyService {
 
+    ///Login and sign up
     @POST("/auth/login")
     fun executeLogin(@Body map: HashMap<String, String>): Call<User>
     @POST("/auth/signup")
@@ -28,9 +29,15 @@ interface IMyService {
 
     @POST("/municipality/login")
     fun executeLoginMun(@Body map: HashMap<String, String>):Call<Municipality>
+    @POST("/auth/forget-password/")
+    fun forgetPassword(
+        @Body map: HashMap<String, String>
+    ):Call<Void>
 
+
+      ///////Reports
     @POST("/reports")
-    fun addReport(@Body map: HashMap<String, String>):Call<ReportReq>
+    fun addReport(@Header("Authorization") authToken:String, @Body map: HashMap<String, String>):Call<ReportReq>
        // @Part file: MultipartBody.Part,
         //@Part("file") photo_url: RequestBody,
         //@Part("body") map:HashMap<String,String>):Call<ReportReq>
@@ -41,19 +48,6 @@ interface IMyService {
    // @FormUrlEncoded
     @GET("/reports/myReport/{id}")
     fun getAllReports(@Path("id") id:String):Call<ArrayList<ReportReq>>
-
-    @POST("/auth/activate/:token")
-    fun activateToken(@Field("token") token:Boolean):Call<ActivateResult>
-
-    @POST("/auth/forget-password/")
-    fun forgetPassword(
-        @Body map: HashMap<String, String>
-    ):Call<Void>
-
-    @POST("/auth/reset-password/")
-    fun resetPassword(
-        @Body @Field("email") email:String
-    ):Call<Void>
 
     @GET("/reports/reportsForMe/{id}")
     fun getReports(@Path("id") id:String):Call<ArrayList<ReportReq>>

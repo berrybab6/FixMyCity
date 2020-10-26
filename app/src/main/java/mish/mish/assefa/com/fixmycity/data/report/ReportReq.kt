@@ -11,20 +11,26 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ReportReq(
-    var description: String? ,
-    var name: String? ,
-    var reported_to: String? ,
+    var description: String?,
+    var name: String?,
+    var reported_to: String?,
     //val photo_url:String=""
-    var photo_url: String? ,
-    var reported_by: String? ,
+    var photo_url: String?,
+    var reported_by: String?,
 
     var isResolved: Boolean = false,
     var report_status: Boolean = false,
-    var created_at: String ,
+    var created_at: Date?=null,
     var is_rated: Boolean = false,
-    var updated_at: String ):Serializable
+    var updated_at: String ):Serializable{
+
+    fun String.toDate(): Date{
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this)
+    }
+}
 /*
     fun imageStringToBitmap(string: String): Bitmap? {
        // val myBitmap = BitmapFactory.decodeFile(string.getAbsolutePath())

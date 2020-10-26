@@ -1,6 +1,7 @@
 package mish.mish.assefa.com.fixmycity.municipality.activity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_municipality_detail.*
@@ -19,8 +21,14 @@ import mish.mish.assefa.com.fixmycity.municipality.controller.MunicipSession
 import mish.mish.assefa.com.fixmycity.data.report.Report
 import mish.mish.assefa.com.fixmycity.data.report.ReportReq
 import mish.mish.assefa.com.fixmycity.framework.base.BaseActivity
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Month
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MunicipalityDetailActivity : BaseActivity() {
     private lateinit var reportReq: ReportReq
     //lateinit var report: Report
@@ -115,6 +123,7 @@ class MunicipalityDetailActivity : BaseActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -122,19 +131,22 @@ class MunicipalityDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val intent=intent.extras
         val arrayList=ArrayList<ReportReq>()
+        fun String.toDate(): Date{
+            return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this)
+        }
 
         reportReq= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
             "Bole Sub City","sd","Misha",
             false,
             false,
-            "3hr ago",
+            null,
             false,
             "0"
             )
 
 
         for(i in 0..15){
-            arrayList.add(reportReq)}
+        arrayList.add(reportReq)}
 
         this.title=intent.getString("data")
         val myAdapter= Municip_Detail(arrayList, this)

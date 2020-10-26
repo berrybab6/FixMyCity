@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 //import android.support.v4.app.Fragement
@@ -17,6 +18,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragement_add_report.*
@@ -37,7 +39,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.*
-import java.util.HashMap
+import java.time.LocalDate
+import java.time.Month
+import java.util.*
 
 
 const val GALLERY_REQUEST:Int=100
@@ -229,8 +233,8 @@ class AddReportFragement: Fragment() {
             val u=user.getValue(session.KEY_USERNAME)
             val i=user.getValue(session.KEY_ID)
             val p=user.getValue(session.KEY_PASSWORD)
-            val t=user.getValue(session.KEY_SESSION)
-            val user1= User(f, l, p, e, i, u, t)
+            val token=user.getValue(session.KEY_SESSION)
+            val user1= User(f, l, p, e, i, u, token)
 
 
 
@@ -260,21 +264,22 @@ class AddReportFragement: Fragment() {
 
           //  map2["user"]=sessionManagement.getSession()
                 val body = UploadImage.UploadRequestBody(file, "image")
-                val call1 = retrofitInterface!!.addReport(
+                val call1 = retrofitInterface!!.addReport(token,
                     //MultipartBody.Part.createFormData("image", file.name, body),
                     //RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
                     map
                 )
                 call1.enqueue(object : Callback<ReportReq> {
 
+                    @RequiresApi(Build.VERSION_CODES.O)
                     override fun onFailure(call: Call<ReportReq>, t: Throwable) {
                         //t.message
-
+                        //val date = LocalDate.of(2016, Month.APRIL, 15) as Date
                         report= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
                             "Bole Sub City","sd","Misha",
                             false,
                             false,
-                            "3hr ago",
+                            null,
                             false,
                             "0"
                         )
@@ -294,6 +299,7 @@ class AddReportFragement: Fragment() {
                             .setTextColor(resources.getColor(R.color.colorPrimary))
                     }
 
+                    @RequiresApi(Build.VERSION_CODES.O)
                     override fun onResponse(call: Call<ReportReq>, response: Response<ReportReq>) {
                         if (response.code() == 200){
                             val photo=response.body()!!.photo_url
@@ -301,7 +307,7 @@ class AddReportFragement: Fragment() {
                             val desc=response.body()!!.description
                             val reported_by=response.body()!!.reported_by
                             val reported_to=response.body()!!.reported_to
-                            val reported_At:String=response.body()!!.created_at
+                            val reported_At=response.body()!!.created_at
 
                             report=ReportReq(
                                 desc,
@@ -342,12 +348,13 @@ class AddReportFragement: Fragment() {
                             report_description_etv?.setText("")
                             reportlocation_etv?.setText("")
                             reportname_etv?.setText("")
+                          //  val date = LocalDate.of(2016, Month.APRIL, 15) as Date
 
                             report= ReportReq("Lorem Ipsum erek earn kgk pl ogk oks adel o mj safaris screwier ideal n,cabin jeff faff","Dead Animal",
                                 "Bole Sub City","sd","Misha",
                                 false,
                                 false,
-                                "3hr ago",
+                                null,
                                 false,
                                 "0"
                             )

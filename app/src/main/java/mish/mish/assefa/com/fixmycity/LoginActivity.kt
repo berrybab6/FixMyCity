@@ -175,9 +175,9 @@ class LoginActivity : BaseActivity() {
 
 
                         } else if (response.code() == 400) {
-                            val email = login_email.text.toString()
-                            val password = login_password.text.toString()
-                            if (email.isEmpty() || password.isEmpty()) {
+                            val email1 = login_email.text.toString()
+                            val password1 = login_password.text.toString()
+                            if (email1.isEmpty() || password1.isEmpty()) {
                                 login_error.text = "Fields cannot be empty"
                             } else {
                                 login_email.setText("")

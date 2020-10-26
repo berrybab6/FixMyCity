@@ -25,6 +25,11 @@ import android.widget.ImageView
 import androidx.browser.customtabs.CustomTabsClient.getPackageName
 import mish.mish.assefa.com.fixmycity.R
 import org.intellij.lang.annotations.Identifier
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 
 class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>(){
@@ -82,7 +87,13 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>(){
                 itemView.status_resolve_tv.setTextColor(Color.GREEN)
 
             } else {
-                itemView.status_resolve_tv.text = "Not Resolved"
+              /*  fun String.toDate(): Date {
+                    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this)
+                }*/
+                //val a=report.updated_at
+//                val m=a.toDate()
+
+                itemView.status_resolve_tv.text = "Not Resloved"
                 itemView.status_resolve_tv.setTextColor(Color.RED)
                 //itemView.rate_stars_custom.visibility=GONE
                 itemView.see_more_tv.visibility= GONE
@@ -91,7 +102,35 @@ class AdapterC(val context:Context) : RecyclerView.Adapter<ViewHolder>(){
 
            // val reportTimeMap=report.getReportDate(report.created_at)
             //val reportTime=reportTimeMap["day"].toString()
-            itemView.hour_ago_card.text = "4hr ago"
+            val date=LocalDateTime.now()
+            val year=date.year
+            val hour=date.hour
+            val month=date.monthValue
+            val day=date.dayOfMonth
+
+
+            val b=report.created_at!!
+            val dayCreated=b.date
+            val hourCreated=b.hours
+            val monthCreated=b.month+1
+            val yearCrested=b.year+1900
+
+            val a=b!!.hours.toString()
+
+            if (dayCreated.toString().equals(day.toString()) &&yearCrested==year&&month==monthCreated) {
+                val m=(hour*60)+date.minute
+                val n=((hourCreated+3)*60)+b!!.minutes
+                val timeAgo= abs(m-n)
+                val minTohour=timeAgo/60
+                val minMin=timeAgo%60
+                val min= abs(date.minute- b.minutes)
+
+                itemView.hour_ago_card.text = "${minTohour}hr:${minMin}min ago"
+            }else{
+                itemView.hour_ago_card.visibility= GONE
+            }
+            //itemView.hour_ago_card.text="$b"
+
 
             //val string=report.photo_url
             //val myBitmap = BitmapFactory.decodeFile(string)

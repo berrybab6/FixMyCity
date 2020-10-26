@@ -78,8 +78,8 @@ dependencies {
     //implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.10"
 
     // Navigation Component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
+    //implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
+    //implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
 
     // Room components
    // implementation "androidx.room:room-runtime:2.3.0"
